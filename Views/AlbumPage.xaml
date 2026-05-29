@@ -5,18 +5,118 @@
              Title="美食相册"
              BackgroundColor="#FFF8F0">
 
-    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="16">
-        <Label Text="📷"
-               FontSize="60"
-               HorizontalTextAlignment="Center" />
-        <Label Text="美食相册"
-               FontSize="24"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Center"
-               TextColor="#E85D04" />
-        <Label Text="即将加入拍照功能..."
-               FontSize="14"
-               HorizontalTextAlignment="Center"
-               TextColor="#999999" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="Auto,*" Padding="16" MaximumWidthRequest="450">
+
+        <!-- 顶部拍照按钮 -->
+        <Frame Grid.Row="0"
+               Padding="14"
+               CornerRadius="14"
+               BackgroundColor="White"
+               BorderColor="Transparent"
+               HasShadow="True"
+               Margin="0,8,0,12">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
+                    <Label Text="📸  记录你的美食"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+                    <Label Text="拍下让人心动的美食瞬间"
+                           FontSize="13"
+                           TextColor="#999999" />
+                </VerticalStackLayout>
+
+                <Button Grid.Column="1"
+                        Text="📷 拍照"
+                        Command="{Binding TakePhotoCommand}"
+                        IsEnabled="{Binding IsTakingPhoto, Converter={StaticResource InvertedBoolConverter}}"
+                        BackgroundColor="#E85D04"
+                        TextColor="White"
+                        FontSize="15"
+                        HeightRequest="44"
+                        CornerRadius="22"
+                        Padding="20,0"
+                        VerticalOptions="Center" />
+            </Grid>
+        </Frame>
+
+        <!-- 拍照中 loading -->
+        <ActivityIndicator Grid.Row="0"
+                           IsRunning="{Binding IsTakingPhoto}"
+                           IsVisible="{Binding IsTakingPhoto}"
+                           Color="#E85D04"
+                           HeightRequest="40"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,-30" />
+
+        <!-- 空状态 -->
+        <VerticalStackLayout Grid.Row="1"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Spacing="12"
+                             IsVisible="{Binding IsEmpty}">
+            <Label Text="🖼️"
+                   FontSize="64"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="还没有美食照片"
+                   FontSize="18"
+                   TextColor="#999999"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="点击上方按钮拍一张吧~"
+                   FontSize="14"
+                   TextColor="#BBBBBB"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <!-- 照片网格 -->
+        <CollectionView Grid.Row="1"
+                         ItemsSource="{Binding Photos}"
+                         IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2"
+                                 HorizontalItemSpacing="8"
+                                 VerticalItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="删除"
+                                           BackgroundColor="#FF4444"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletePhotoCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Padding="0"
+                               CornerRadius="12"
+                               BackgroundColor="White"
+                               BorderColor="Transparent"
+                               HasShadow="True"
+                               HeightRequest="160">
+                            <Grid>
+                                <!-- 缩略图 -->
+                                <Image Source="{Binding .}"
+                                       Aspect="AspectFill" />
+
+                                <!-- 点击手势查看大图 -->
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewPhotoCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
 </ContentPage>
