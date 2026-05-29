@@ -22,7 +22,7 @@ public class RandomViewModel : INotifyPropertyChanged
 
         RandomPickCommand = new Command(OnRandomPick);
         AddFavoriteCommand = new Command(OnAddFavorite);
-        SpeakCravingCommand = new Command(async () => await OnSpeakCraving());
+        SearchFoodCommand = new Command(async () => await OnSearchFood());
     }
 
     // 用户输入的美食名称
@@ -32,7 +32,7 @@ public class RandomViewModel : INotifyPropertyChanged
         set { _cravingText = value; OnPropertyChanged(); }
     }
 
-    public ICommand SpeakCravingCommand { get; }
+    public ICommand SearchFoodCommand { get; }
 
     public FoodItem CurrentFood
     {
@@ -68,7 +68,6 @@ public class RandomViewModel : INotifyPropertyChanged
 
     private void OnShakeDetected(object? sender, EventArgs e)
     {
-        // 防抖：800ms 内不重复触发
         var now = DateTime.UtcNow;
         if ((now - _lastShakeTime).TotalMilliseconds < 800) return;
         _lastShakeTime = now;
@@ -78,7 +77,7 @@ public class RandomViewModel : INotifyPropertyChanged
         ShakeHappened?.Invoke();
 
         try { HapticFeedback.Default.Perform(HapticFeedbackType.LongPress); }
-        catch { /* 模拟器可能不支持，忽略 */ }
+        catch { /* 忽略 */ }
     }
 
     private void OnRandomPick()
@@ -88,46 +87,18 @@ public class RandomViewModel : INotifyPropertyChanged
         ShakeHappened?.Invoke();
 
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
-        catch { /* 模拟器可能不支持，忽略 */ }
+        catch { /* 忽略 */ }
     }
 
-    private async void DoRandomPick()
+    private void DoRandomPick()
     {
         CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
-
-        // 语音播报当前推荐
-        await SpeakTextAsync($"今天吃——{CurrentFood.Name}");
-    }
-
-    /// TTS 语音播报，带音量和延迟确保引擎就绪
-    private static async Task SpeakTextAsync(string text)
-    {
-        try
-        {
-            // 短暂延迟让TTS引擎初始化
-            await Task.Delay(100);
-
-            await TextToSpeech.Default.SpeakAsync(text,
-                new SpeechOptions { Volume = 1.0f, Pitch = 1.0f });
-        }
-        catch
-        {
-            try
-            {
-                // 兜底：不带参数直接播
-                await TextToSpeech.Default.SpeakAsync(text);
-            }
-            catch
-            {
-                // TTS不可用，静默
-            }
-        }
     }
 
     private async void OnAddFavorite()
     {
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
-        catch { /* 模拟器可能不支持，忽略 */ }
+        catch { /* 忽略 */ }
 
         var favService = FavoritesService.Instance;
 
@@ -142,7 +113,7 @@ public class RandomViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task OnSpeakCraving()
+    private async Task OnSearchFood()
     {
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
         catch { /* 忽略 */ }
@@ -155,19 +126,31 @@ public class RandomViewModel : INotifyPropertyChanged
             return;
         }
 
-        // 验证通过 → TTS 朗读
-        try
+        // 在53种食物中搜索
+        var keyword = CravingText.Trim();
+        var found = _foodService.SearchFood(keyword);
+
+        if (found != null && found.Name != CurrentFood.Name)
         {
-            await SpeakTextAsync($"你想吃——{CravingText.Trim()}");
+            CurrentFood = found;
+            SoundHelper.PlayShakeSound();
+            ShakeHappened?.Invoke();
         }
-        catch (Exception)
+        else if (found != null)
         {
-            await Shell.Current.DisplayAlert("出错了",
-                "语音播报失败。请检查：\n1. 手机设置 > 文字转语音 > 安装语音引擎\n2. 下载中文语音包\n3. 音量是否已开启", "好的");
+            // 搜到的就是当前显示的
+            await Shell.Current.DisplayAlert("找到了！", $"「{found.Name}」已经显示在卡片上了~", "好的");
+        }
+        else
+        {
+            // 没搜到，随机推荐一个当惊喜
+            CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
+            SoundHelper.PlayShakeSound();
+            ShakeHappened?.Invoke();
+            await Shell.Current.DisplayAlert("没找到", $"没有搜到「{keyword}」相关的美食，为你随机推荐了一个~", "好的");
         }
     }
 
-    /// 输入验证：不为空、长度检查
     private (bool isValid, string message) ValidateCraving()
     {
         if (string.IsNullOrWhiteSpace(CravingText))

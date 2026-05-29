@@ -93,6 +93,25 @@ public class FoodDataService
         return _foods[index];
     }
 
+    /// 根据关键词搜索食物，匹配名称或分类
+    public FoodItem? SearchFood(string keyword)
+    {
+        if (string.IsNullOrWhiteSpace(keyword)) return null;
+
+        keyword = keyword.Trim();
+        // 精确匹配名称
+        var exact = _foods.FirstOrDefault(f =>
+            f.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        if (exact != null) return exact;
+
+        // 模糊匹配分类
+        var byCategory = _foods.FirstOrDefault(f =>
+            f.Category.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        if (byCategory != null) return byCategory;
+
+        return null;
+    }
+
     public FoodItem GetRandomFoodExcluding(FoodItem? exclude)
     {
         FoodItem result;
