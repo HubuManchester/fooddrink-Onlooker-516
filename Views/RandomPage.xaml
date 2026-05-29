@@ -56,7 +56,7 @@
                         CornerRadius="20"
                         Padding="16,0"
                         VerticalOptions="Center"
-                        SemanticProperties.Description="搜索输入的美食名称" />
+                        SemanticProperties.Description="Search for a dish" />
             </Grid>
         </Frame>
 

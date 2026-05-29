@@ -112,7 +112,7 @@ public class FavoritesViewModel : INotifyPropertyChanged
     private async void OnRemove(FavoriteItem item)
     {
         bool confirm = await Shell.Current.DisplayAlert(
-            "Cancel收藏",
+            "Remove Favourite",
             $"Remove 「{item.Food.Name}」from favourites?",
             "Remove", "Cancel");
 
