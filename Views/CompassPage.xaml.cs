@@ -1,3 +1,4 @@
+using FoodPicker.Helpers;
 using FoodPicker.ViewModels;
 
 namespace FoodPicker.Views;
@@ -11,6 +12,7 @@ public partial class CompassPage : ContentPage
         InitializeComponent();
         _viewModel = new CompassViewModel();
         BindingContext = _viewModel;
+        NavigationHelper.EnableTabSwipe(this);
 
         _viewModel.HeadingChanged += OnHeadingChanged;
     }

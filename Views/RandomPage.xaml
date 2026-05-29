@@ -73,7 +73,8 @@
 
             <VerticalStackLayout Spacing="12">
                 <!-- Emoji -->
-                <Label Text="{Binding CurrentFood.Emoji}"
+                <Label x:Name="EmojiLabel"
+                       Text="{Binding CurrentFood.Emoji}"
                        FontSize="80"
                        HorizontalTextAlignment="Center"
                        AutomationProperties.IsInAccessibleTree="True" />

@@ -1,3 +1,4 @@
+using FoodPicker.Helpers;
 using FoodPicker.ViewModels;
 
 namespace FoodPicker.Views;
@@ -11,6 +12,7 @@ public partial class FavoritesPage : ContentPage
         InitializeComponent();
         _viewModel = new FavoritesViewModel();
         BindingContext = _viewModel;
+        NavigationHelper.EnableTabSwipe(this);
     }
 
     protected override void OnAppearing()

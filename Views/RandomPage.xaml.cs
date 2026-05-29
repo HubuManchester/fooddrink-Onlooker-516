@@ -1,3 +1,4 @@
+using FoodPicker.Helpers;
 using FoodPicker.ViewModels;
 
 namespace FoodPicker.Views;
@@ -13,6 +14,7 @@ public partial class RandomPage : ContentPage
         BindingContext = _viewModel;
 
         _viewModel.ShakeHappened += OnShakeHappened;
+        NavigationHelper.EnableTabSwipe(this);
     }
 
     protected override void OnAppearing()
@@ -29,28 +31,31 @@ public partial class RandomPage : ContentPage
 
     private async void OnShakeHappened()
     {
-        // 摇晃动画：卡片缩小 → 轻转 → 弹回
         try
         {
-            // 阶段1：缩小+轻微旋转
+            // emoji 先弹跳
+            await EmojiLabel.ScaleTo(1.3, 100, Easing.CubicOut);
+            await EmojiLabel.ScaleTo(0.9, 80, Easing.CubicIn);
+            await EmojiLabel.ScaleTo(1.0, 100, Easing.CubicOut);
+
+            // 卡片缩小+轻微旋转
             await Task.WhenAll(
-                FoodCard.ScaleTo(0.85, 120, Easing.CubicIn),
-                FoodCard.RotateTo(5, 120, Easing.CubicIn)
+                FoodCard.ScaleTo(0.88, 120, Easing.CubicIn),
+                FoodCard.RotateTo(4, 120, Easing.CubicIn)
             );
 
-            // 短暂停顿
-            await Task.Delay(50);
+            await Task.Delay(40);
 
-            // 阶段2：弹回原位 + 弹性效果
+            // 弹回原位
             await Task.WhenAll(
-                FoodCard.ScaleTo(1.05, 200, Easing.CubicOut),
-                FoodCard.RotateTo(-2, 200, Easing.CubicOut)
+                FoodCard.ScaleTo(1.03, 180, Easing.CubicOut),
+                FoodCard.RotateTo(-1.5, 180, Easing.CubicOut)
             );
 
-            // 阶段3：回弹到正常
+            // 回弹到正常
             await Task.WhenAll(
-                FoodCard.ScaleTo(1.0, 160, Easing.CubicOut),
-                FoodCard.RotateTo(0, 160, Easing.CubicOut)
+                FoodCard.ScaleTo(1.0, 140, Easing.CubicOut),
+                FoodCard.RotateTo(0, 140, Easing.CubicOut)
             );
         }
         catch
