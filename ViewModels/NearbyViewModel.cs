@@ -25,7 +25,12 @@ public class NearbyViewModel : INotifyPropertyChanged
     public NearbyViewModel()
     {
         NearbyFoods = new ObservableCollection<NearFood>();
-        RefreshCommand = new Command(async () => await LoadLocationAsync());
+        RefreshCommand = new Command(async () =>
+        {
+            try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
+            catch { /* 模拟器可能不支持，忽略 */ }
+            await LoadLocationAsync();
+        });
     }
 
     public string LocationText

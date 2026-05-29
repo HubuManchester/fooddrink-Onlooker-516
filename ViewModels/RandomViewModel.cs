@@ -64,6 +64,9 @@ public class RandomViewModel : INotifyPropertyChanged
         DoRandomPick();
         SoundHelper.PlayShakeSound();
         ShakeHappened?.Invoke();
+
+        try { HapticFeedback.Default.Perform(HapticFeedbackType.LongPress); }
+        catch { /* 模拟器可能不支持，忽略 */ }
     }
 
     private void OnRandomPick()
@@ -71,6 +74,9 @@ public class RandomViewModel : INotifyPropertyChanged
         DoRandomPick();
         SoundHelper.PlayShakeSound();
         ShakeHappened?.Invoke();
+
+        try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
+        catch { /* 模拟器可能不支持，忽略 */ }
     }
 
     private void DoRandomPick()
@@ -80,6 +86,9 @@ public class RandomViewModel : INotifyPropertyChanged
 
     private async void OnAddFavorite()
     {
+        try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
+        catch { /* 模拟器可能不支持，忽略 */ }
+
         await Shell.Current.DisplayAlert("已收藏", $"「{CurrentFood.Name}」已加入收藏夹！", "好的");
     }
 
