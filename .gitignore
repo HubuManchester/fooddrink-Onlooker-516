@@ -1,0 +1,27 @@
+## .NET MAUI
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.DS_Store
+*.pdb
+
+## Visual Studio
+.vs/
+*.sln.docstates
+
+## Rider
+.idea/
+
+## NuGet
+packages/
+*.nupkg
+
+## Android
+*.apk
+*.aab
+*.keystore
+
+## macOS
+.DS_Store

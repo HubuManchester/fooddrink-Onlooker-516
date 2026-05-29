@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FoodPicker.Views.RandomPage"
+             Title="随机推荐"
+             BackgroundColor="#FFF8F0">
+
+    <Grid RowDefinitions="Auto,Auto,*"
+          Padding="24"
+          MaximumWidthRequest="400">
+
+        <!-- 顶部标题 -->
+        <VerticalStackLayout Grid.Row="0" Spacing="4" Padding="0,20,0,0">
+            <Label Text="今天吃什么？"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="#E85D04"
+                   AutomationProperties.IsInAccessibleTree="True" />
+
+            <Label Text="摇晃手机，或者点击下方按钮"
+                   FontSize="14"
+                   HorizontalTextAlignment="Center"
+                   TextColor="#999999"
+                   AutomationProperties.IsInAccessibleTree="True" />
+        </VerticalStackLayout>
+
+        <!-- 食物展示卡片 -->
+        <Frame x:Name="FoodCard"
+               Grid.Row="1"
+               VerticalOptions="Center"
+               Padding="24"
+               CornerRadius="16"
+               BackgroundColor="White"
+               BorderColor="Transparent"
+               HasShadow="True"
+               AutomationProperties.IsInAccessibleTree="True">
+
+            <VerticalStackLayout Spacing="12">
+                <!-- Emoji -->
+                <Label Text="{Binding CurrentFood.Emoji}"
+                       FontSize="80"
+                       HorizontalTextAlignment="Center"
+                       AutomationProperties.IsInAccessibleTree="True" />
+
+                <!-- 食物名 -->
+                <Label Text="{Binding CurrentFood.Name}"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#333333"
+                       AutomationProperties.IsInAccessibleTree="True" />
+
+                <!-- 类别标签 -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                    <Frame Padding="10,4"
+                           CornerRadius="12"
+                           BackgroundColor="#FFF0E6"
+                           BorderColor="Transparent">
+                        <Label Text="{Binding CurrentFood.Category}"
+                               FontSize="13"
+                               TextColor="#E85D04" />
+                    </Frame>
+                </HorizontalStackLayout>
+
+                <!-- 介绍文字 -->
+                <Label Text="{Binding CurrentFood.Description}"
+                       FontSize="15"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#666666"
+                       LineHeight="1.5" />
+
+                <!-- 分割线 -->
+                <BoxView HeightRequest="1"
+                         Color="#F0E0D0"
+                         Margin="8,4" />
+
+                <!-- 推荐搭配 -->
+                <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
+                    <Label Text="💡"
+                           FontSize="14"
+                           VerticalTextAlignment="Center" />
+                    <Label Text="{Binding CurrentFood.Pairing}"
+                           FontSize="13"
+                           TextColor="#C06A2A"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- 底部按钮区 -->
+        <HorizontalStackLayout Grid.Row="2"
+                                Spacing="16"
+                                HorizontalOptions="Center"
+                                VerticalOptions="End"
+                                Padding="0,0,0,20">
+
+            <Button Text="🔄  再换一个"
+                    Command="{Binding RandomPickCommand}"
+                    BackgroundColor="#E85D04"
+                    TextColor="White"
+                    FontSize="16"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Padding="24,0"
+                    SemanticProperties.Description="再换一个推荐"
+                    SemanticProperties.Hint="点击随机换一道菜" />
+
+            <Button Text="♡ 收藏"
+                    Command="{Binding AddFavoriteCommand}"
+                    BackgroundColor="#FF6B35"
+                    TextColor="White"
+                    FontSize="16"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Padding="24,0"
+                    SemanticProperties.Description="收藏这道菜"
+                    SemanticProperties.Hint="把这道菜加入收藏夹" />
+
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>
