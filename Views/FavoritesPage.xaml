@@ -5,32 +5,46 @@
              Title="我的收藏"
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
-    <Grid RowDefinitions="*,Auto" Padding="16" MaximumWidthRequest="450">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" MaximumWidthRequest="450">
 
-        <!-- 空状态提示 -->
-        <VerticalStackLayout Grid.Row="0"
-                             VerticalOptions="Center"
-                             HorizontalOptions="Center"
-                             Spacing="12"
+        <!-- ===== 统计卡片 ===== -->
+        <Frame Grid.Row="0" Padding="14" CornerRadius="14" HasShadow="True" Margin="0,4,0,8"
+               BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
+               BorderColor="Transparent"
+               IsVisible="{Binding HasStats}">
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Label Text="📊" FontSize="18" VerticalTextAlignment="Center" />
+                <Label Text="{Binding StatsText}" FontSize="15" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
+                       VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <!-- ===== 随手选一个 ===== -->
+        <Button Grid.Row="1" Text="🎲  随手选一个"
+                Command="{Binding RandomPickCommand}"
+                BackgroundColor="{AppThemeBinding Light=#FF8C42, Dark=#CC6633}"
+                TextColor="White" FontSize="14"
+                HeightRequest="42" CornerRadius="21"
+                Margin="0,0,0,10"
+                IsVisible="{Binding HasStats}" />
+
+        <!-- ===== 空状态 ===== -->
+        <VerticalStackLayout Grid.Row="2" VerticalOptions="Center"
+                             HorizontalOptions="Center" Spacing="14"
                              IsVisible="{Binding IsEmpty}">
-            <Label Text="📭"
-                   FontSize="64"
-                   HorizontalTextAlignment="Center" />
-            <Label Text="还没有收藏任何美食"
-                   FontSize="18"
+            <Label Text="📭" FontSize="56" HorizontalTextAlignment="Center" />
+            <Label Text="还没有收藏任何美食" FontSize="18"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    HorizontalTextAlignment="Center" />
-            <Label Text="去「随机推荐」页找找灵感吧~"
-                   FontSize="14"
+            <Label Text="去「随机推荐」页找找灵感吧~" FontSize="13"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
 
-        <!-- 收藏列表 -->
-        <CollectionView Grid.Row="0"
-                         ItemsSource="{Binding FavoriteItems}"
+        <!-- ===== 收藏列表 ===== -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding FavoriteItems}"
                          IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
-
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <SwipeView>
@@ -43,53 +57,47 @@
                             </SwipeItems>
                         </SwipeView.RightItems>
 
-                        <Frame Margin="0,0,0,10"
-                               Padding="16"
-                               CornerRadius="14"
+                        <Frame Margin="0,0,0,10" Padding="14" CornerRadius="14" HasShadow="True"
                                BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
-                               BorderColor="Transparent"
-                               HasShadow="True">
-
-                            <!-- 点击整张卡片编辑笔记 -->
+                               BorderColor="Transparent">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditNoteCommand}"
                                     CommandParameter="{Binding .}" />
                             </Frame.GestureRecognizers>
 
-                            <Grid ColumnDefinitions="60,*" MinimumHeightRequest="70">
-                                <Label Grid.Column="0"
-                                       Text="{Binding Food.Emoji}"
-                                       FontSize="36"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center" />
+                            <Grid ColumnDefinitions="56,*" MinimumHeightRequest="64">
+                                <!-- 大 emoji -->
+                                <Border Grid.Column="0" StrokeShape="RoundRectangle 28"
+                                        Stroke="Transparent" HeightRequest="52" WidthRequest="52"
+                                        BackgroundColor="{AppThemeBinding Light=#FFF2E6, Dark=#2A2018}"
+                                        VerticalOptions="Center">
+                                    <Label Text="{Binding Food.Emoji}" FontSize="28"
+                                           HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
 
-                                <VerticalStackLayout Grid.Column="1"
-                                                      Padding="8,0,0,0"
-                                                      Spacing="4"
-                                                      VerticalOptions="Center">
-                                    <Label Text="{Binding Food.Name}"
-                                           FontSize="17"
-                                           FontAttributes="Bold"
-                                           TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}" />
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{Binding Food.Category}"
-                                               FontSize="13"
-                                               TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}" />
+                                <VerticalStackLayout Grid.Column="1" Padding="10,0,0,0"
+                                                      Spacing="3" VerticalOptions="Center">
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="{Binding Food.Name}" FontSize="17" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light=#333333, Dark=#E8D5C4}" />
+                                        <!-- 笔记角标 -->
+                                        <Frame Padding="6,2" CornerRadius="8" HasShadow="False"
+                                               BackgroundColor="#E85D04" BorderColor="Transparent"
+                                               IsVisible="{Binding Note, Converter={StaticResource IsNotEmptyConverter}}"
+                                               VerticalOptions="Center">
+                                            <Label Text="✏️" FontSize="10" TextColor="White" />
+                                        </Frame>
                                     </HorizontalStackLayout>
-
-                                    <!-- 有笔记时显示笔记预览 -->
-                                    <Label Text="{Binding Note, StringFormat='📝 {0}'}"
-                                           FontSize="12"
-                                           TextColor="#E85D04"
-                                           LineBreakMode="TailTruncation"
-                                           MaxLines="1"
+                                    <Label Text="{Binding Food.Category}" FontSize="13"
+                                           TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}" />
+                                    <!-- 笔记预览 -->
+                                    <Label Text="{Binding Note}" FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
+                                           LineBreakMode="TailTruncation" MaxLines="1"
                                            IsVisible="{Binding Note, Converter={StaticResource IsNotEmptyConverter}}" />
-
-                                    <!-- 没笔记时显示提示 -->
-                                    <Label Text="💬 点击添加评价..."
-                                           FontSize="12"
-                                           TextColor="{AppThemeBinding Light=#BBBBBB, Dark=#6A5A4A}"
+                                    <Label Text="💬 点击添加个人评价..." FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#BBBBBB, Dark=#5A4A3A}"
                                            IsVisible="{Binding Note, Converter={StaticResource IsEmptyConverter}}" />
                                 </VerticalStackLayout>
                             </Grid>
@@ -99,16 +107,13 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- 底部清空按钮 -->
-        <Button Grid.Row="1"
-                Text="🗑  清空所有收藏"
+        <!-- ===== 清空按钮 ===== -->
+        <Button Grid.Row="3" Text="🗑  清空所有收藏"
                 Command="{Binding ClearAllCommand}"
                 BackgroundColor="{AppThemeBinding Light={StaticResource FoodWarnLight}, Dark={StaticResource FoodWarnDark}}"
-                TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
-                FontSize="14"
-                HeightRequest="44"
-                CornerRadius="22"
-                Margin="0,8,0,16"
-                IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}" />
+                TextColor="White" FontSize="14"
+                HeightRequest="42" CornerRadius="21"
+                Margin="0,6,0,16"
+                IsVisible="{Binding HasStats}" />
     </Grid>
 </ContentPage>
