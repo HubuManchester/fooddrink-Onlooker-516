@@ -5,84 +5,147 @@
              Title="美食相册"
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
-    <Grid RowDefinitions="Auto,*" Padding="16" MaximumWidthRequest="450">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" MaximumWidthRequest="450">
 
-        <!-- 顶部拍照按钮 -->
-        <Frame Grid.Row="0"
-               Padding="14"
-               CornerRadius="14"
+        <!-- ===== 顶部操作栏 ===== -->
+        <Frame Grid.Row="0" Padding="12" CornerRadius="14" HasShadow="True" Margin="0,8,0,8"
                BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
-               BorderColor="Transparent"
-               HasShadow="True"
-               Margin="0,8,0,12">
-
-            <Grid ColumnDefinitions="*,Auto">
-                <VerticalStackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
-                    <Label Text="📸  记录你的美食"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}" />
-                    <Label Text="拍下让人心动的美食瞬间"
-                           FontSize="13"
-                           TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}" />
-                </VerticalStackLayout>
-
-                <Button Grid.Column="1"
-                        Text="📷 拍照"
+               BorderColor="Transparent">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <Label Grid.Column="0" Text="📸  美食相册" FontSize="16" FontAttributes="Bold"
+                       VerticalTextAlignment="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}" />
+                <Button Grid.Column="1" Text="🖼️ 相册"
+                        Command="{Binding PickPhotoCommand}"
+                        BackgroundColor="{AppThemeBinding Light=#FF8C42, Dark=#CC6633}"
+                        TextColor="White" FontSize="13" HeightRequest="38"
+                        CornerRadius="19" Padding="14,0" VerticalOptions="Center" />
+                <Button Grid.Column="2" Text="📷 拍照"
                         Command="{Binding TakePhotoCommand}"
-                        IsEnabled="{Binding IsTakingPhoto, Converter={StaticResource InvertedBoolConverter}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
-                        TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
-                        FontSize="15"
-                        HeightRequest="44"
-                        CornerRadius="22"
-                        Padding="20,0"
-                        VerticalOptions="Center"
-                        SemanticProperties.Description="拍照按钮" />
+                        TextColor="White" FontSize="13" HeightRequest="38"
+                        CornerRadius="19" Padding="14,0" VerticalOptions="Center" />
             </Grid>
         </Frame>
 
-        <!-- 拍照中 loading -->
-        <ActivityIndicator Grid.Row="0"
-                           IsRunning="{Binding IsTakingPhoto}"
-                           IsVisible="{Binding IsTakingPhoto}"
+        <!-- 加载指示器 -->
+        <ActivityIndicator Grid.Row="0" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
                            Color="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
-                           HeightRequest="40"
-                           VerticalOptions="End"
-                           HorizontalOptions="Center"
-                           Margin="0,0,0,-30" />
+                           HeightRequest="32" VerticalOptions="End" HorizontalOptions="Center"
+                           Margin="0,0,0,-18" />
 
-        <!-- 空状态 -->
-        <VerticalStackLayout Grid.Row="1"
-                             VerticalOptions="Center"
-                             HorizontalOptions="Center"
-                             Spacing="12"
-                             IsVisible="{Binding IsEmpty}">
-            <Label Text="🖼️"
-                   FontSize="64"
-                   HorizontalTextAlignment="Center" />
-            <Label Text="还没有美食照片"
-                   FontSize="18"
+        <!-- ===== 分类筛选 ===== -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,8"
+                    HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout Spacing="8" x:Name="FilterBar">
+                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
+                       BorderColor="Transparent">
+                    <Label Text="全部" FontSize="12" TextColor="White" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="全部" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
+                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
+                    <Label Text="🍻 朋友聚会" FontSize="12"
+                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="🍻 朋友聚会" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
+                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
+                    <Label Text="💰 好吃不贵" FontSize="12"
+                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="💰 好吃不贵" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
+                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
+                    <Label Text="☕ 独自享受" FontSize="12"
+                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="☕ 独自享受" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
+                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
+                    <Label Text="🌙 深夜放毒" FontSize="12"
+                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="🌙 深夜放毒" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
+                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
+                    <Label Text="🎂 特别日子" FontSize="12"
+                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="🎂 特别日子" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Frame>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- ===== 空状态 ===== -->
+        <VerticalStackLayout Grid.Row="2" VerticalOptions="Center" HorizontalOptions="Center"
+                             Spacing="14" IsVisible="{Binding IsEmpty}">
+            <Label Text="🖼️" FontSize="56" HorizontalTextAlignment="Center" />
+            <Label Text="还没有美食照片" FontSize="18"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    HorizontalTextAlignment="Center" />
-            <Label Text="点击上方按钮拍一张吧~"
-                   FontSize="14"
+            <Label Text="拍照或从相册导入你的美食记录" FontSize="13"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
+            <!-- 分类灵感卡片 -->
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Frame Padding="14,10" CornerRadius="12" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="🍻" FontSize="24" HorizontalTextAlignment="Center" />
+                        <Label Text="朋友聚会" FontSize="11"
+                               TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Padding="14,10" CornerRadius="12" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="💰" FontSize="24" HorizontalTextAlignment="Center" />
+                        <Label Text="好吃不贵" FontSize="11"
+                               TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Padding="14,10" CornerRadius="12" HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="🌙" FontSize="24" HorizontalTextAlignment="Center" />
+                        <Label Text="深夜放毒" FontSize="11"
+                               TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
 
-        <!-- 照片网格 -->
-        <CollectionView Grid.Row="1"
-                         ItemsSource="{Binding Photos}"
+        <!-- ===== 照片网格 ===== -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding FilteredPhotos}"
                          IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
-
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical"
-                                 Span="2"
-                                 HorizontalItemSpacing="8"
-                                 VerticalItemSpacing="8" />
+                <GridItemsLayout Orientation="Vertical" Span="2"
+                                 HorizontalItemSpacing="8" VerticalItemSpacing="8" />
             </CollectionView.ItemsLayout>
-
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <SwipeView>
@@ -95,16 +158,18 @@
                             </SwipeItems>
                         </SwipeView.RightItems>
 
-                        <Frame Padding="0"
-                               CornerRadius="12"
+                        <Frame Padding="0" CornerRadius="12" HasShadow="True" HeightRequest="170"
                                BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
-                               BorderColor="Transparent"
-                               HasShadow="True"
-                               HeightRequest="160">
+                               BorderColor="Transparent">
                             <Grid>
-                                <Image Source="{Binding .}"
-                                       Aspect="AspectFill" />
-
+                                <Image Source="{Binding FilePath}" Aspect="AspectFill" />
+                                <!-- 分类角标 -->
+                                <Frame Padding="8,3" CornerRadius="10" HasShadow="False"
+                                       BackgroundColor="#CC000000" BorderColor="Transparent"
+                                       HorizontalOptions="End" VerticalOptions="End"
+                                       Margin="0,0,6,6">
+                                    <Label Text="{Binding Category}" FontSize="10" TextColor="White" />
+                                </Frame>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewPhotoCommand}"

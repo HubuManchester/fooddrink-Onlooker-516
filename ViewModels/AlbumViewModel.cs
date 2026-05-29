@@ -2,20 +2,30 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using FoodPicker.Models;
 
 namespace FoodPicker.ViewModels;
 
 public class AlbumViewModel : INotifyPropertyChanged
 {
+    // 照片分类
+    public static readonly string[] Categories =
+        { "全部", "🍻 朋友聚会", "💰 好吃不贵", "☕ 独自享受", "🌙 深夜放毒", "🎂 特别日子" };
+
+    private readonly List<PhotoItem> _allPhotos = new();
+    private string _selectedCategory = "全部";
+
     public AlbumViewModel()
     {
-        Photos = new ObservableCollection<string>();
-        TakePhotoCommand = new Command(async () => await TakePhotoAsync());
-        DeletePhotoCommand = new Command<string>(OnDeletePhoto);
-        ViewPhotoCommand = new Command<string>(async (path) => await ViewPhotoAsync(path));
+        FilteredPhotos = new ObservableCollection<PhotoItem>();
+        TakePhotoCommand = new Command(async () => await CaptureAsync(true));
+        PickPhotoCommand = new Command(async () => await CaptureAsync(false));
+        DeletePhotoCommand = new Command<PhotoItem>(OnDeletePhoto);
+        ViewPhotoCommand = new Command<PhotoItem>(async (p) => await ViewPhotoAsync(p));
+        FilterCommand = new Command<string>(OnFilter);
     }
 
-    public ObservableCollection<string> Photos { get; }
+    public ObservableCollection<PhotoItem> FilteredPhotos { get; }
 
     private bool _isEmpty = true;
     public bool IsEmpty
@@ -24,90 +34,130 @@ public class AlbumViewModel : INotifyPropertyChanged
         set { _isEmpty = value; OnPropertyChanged(); }
     }
 
-    private bool _isTakingPhoto;
-    public bool IsTakingPhoto
+    private bool _isBusy;
+    public bool IsBusy
     {
-        get => _isTakingPhoto;
-        set { _isTakingPhoto = value; OnPropertyChanged(); }
+        get => _isBusy;
+        set { _isBusy = value; OnPropertyChanged(); }
+    }
+
+    private string _selectedFilter = "全部";
+    public string SelectedFilter
+    {
+        get => _selectedFilter;
+        set { _selectedFilter = value; OnPropertyChanged(); }
     }
 
     public ICommand TakePhotoCommand { get; }
+    public ICommand PickPhotoCommand { get; }
     public ICommand DeletePhotoCommand { get; }
     public ICommand ViewPhotoCommand { get; }
+    public ICommand FilterCommand { get; }
 
-    private async Task TakePhotoAsync()
+    private async Task CaptureAsync(bool useCamera)
     {
-        if (IsTakingPhoto) return;
+        if (IsBusy) return;
+        IsBusy = true;
 
         try
         {
-            IsTakingPhoto = true;
-
-            // 检查相机权限
-            var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
-            if (status != PermissionStatus.Granted)
+            // 权限检查
+            if (useCamera)
             {
-                status = await Permissions.RequestAsync<Permissions.Camera>();
+                var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
+                if (status != PermissionStatus.Granted)
+                    status = await Permissions.RequestAsync<Permissions.Camera>();
+                if (status != PermissionStatus.Granted)
+                {
+                    await Shell.Current.DisplayAlert("提示", "需要相机权限才能拍照", "知道了");
+                    return;
+                }
             }
 
-            if (status != PermissionStatus.Granted)
-            {
-                await Shell.Current.DisplayAlert("提示", "需要相机权限才能拍照", "知道了");
-                return;
-            }
+            // 拍照或选图
+            FileResult? file = useCamera
+                ? await MediaPicker.Default.CapturePhotoAsync()
+                : await MediaPicker.Default.PickPhotoAsync();
 
-            // 拍照
-            var photo = await MediaPicker.Default.CapturePhotoAsync();
+            if (file == null) return; // 用户取消
 
-            if (photo == null) return;  // 用户取消
+            // 让用户选分类
+            var category = await Shell.Current.DisplayActionSheet(
+                "选择照片分类", "取消", null, Categories[1..]); // 跳过"全部"
+            if (category == null || category == "取消") category = "💰 好吃不贵";
 
-            // 保存到 app 的本地目录
+            // 保存文件
             var appDir = FileSystem.AppDataDirectory;
             var fileName = $"food_{DateTime.Now:yyyyMMdd_HHmmss}.jpg";
             var filePath = Path.Combine(appDir, fileName);
 
-            using (var sourceStream = await photo.OpenReadAsync())
+            using (var sourceStream = await file.OpenReadAsync())
             using (var destStream = File.OpenWrite(filePath))
             {
                 await sourceStream.CopyToAsync(destStream);
             }
 
-            Photos.Add(filePath);
-            IsEmpty = Photos.Count == 0;
+            var photo = new PhotoItem
+            {
+                FilePath = filePath,
+                Category = category,
+                TakenAt = DateTime.Now
+            };
+
+            _allPhotos.Add(photo);
+            ApplyFilter();
         }
         catch (FeatureNotSupportedException)
         {
-            await Shell.Current.DisplayAlert("提示", "此设备不支持拍照功能", "知道了");
+            await Shell.Current.DisplayAlert("提示", "此设备不支持该功能", "知道了");
         }
         catch (PermissionException)
         {
-            await Shell.Current.DisplayAlert("提示", "相机权限被拒绝，请在设置中开启", "知道了");
+            await Shell.Current.DisplayAlert("提示", "权限被拒绝，请在设置中开启", "知道了");
         }
         catch (Exception ex)
         {
-            await Shell.Current.DisplayAlert("出错了", $"拍照失败：{ex.Message}", "好的");
+            await Shell.Current.DisplayAlert("出错了", $"操作失败：{ex.Message}", "好的");
         }
         finally
         {
-            IsTakingPhoto = false;
+            IsBusy = false;
         }
     }
 
-    private async void OnDeletePhoto(string filePath)
+    private void OnFilter(string category)
+    {
+        _selectedCategory = category;
+        SelectedFilter = category;
+        ApplyFilter();
+    }
+
+    private void ApplyFilter()
+    {
+        FilteredPhotos.Clear();
+        var items = _selectedCategory == "全部"
+            ? _allPhotos
+            : _allPhotos.Where(p => p.Category == _selectedCategory);
+
+        foreach (var p in items)
+            FilteredPhotos.Add(p);
+
+        IsEmpty = FilteredPhotos.Count == 0;
+    }
+
+    private async void OnDeletePhoto(PhotoItem photo)
     {
         bool confirm = await Shell.Current.DisplayAlert(
-            "删除照片", "确定要删除这张美食照片吗？", "删除", "取消");
-
+            "删除照片", $"确定要删除这张「{photo.Category}」的照片吗？", "删除", "取消");
         if (!confirm) return;
 
         try
         {
-            // 删除文件
-            if (File.Exists(filePath))
-                File.Delete(filePath);
+            if (File.Exists(photo.FilePath))
+                File.Delete(photo.FilePath);
 
-            Photos.Remove(filePath);
-            IsEmpty = Photos.Count == 0;
+            _allPhotos.Remove(photo);
+            ApplyFilter();
         }
         catch (Exception ex)
         {
@@ -115,9 +165,9 @@ public class AlbumViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task ViewPhotoAsync(string filePath)
+    private async Task ViewPhotoAsync(PhotoItem photo)
     {
-        if (!File.Exists(filePath))
+        if (!File.Exists(photo.FilePath))
         {
             await Shell.Current.DisplayAlert("提示", "照片文件不存在", "知道了");
             return;
@@ -125,13 +175,12 @@ public class AlbumViewModel : INotifyPropertyChanged
 
         try
         {
-            // 使用系统默认图片查看器打开照片
             await Launcher.Default.OpenAsync(new OpenFileRequest
             {
-                File = new ReadOnlyFile(filePath)
+                File = new ReadOnlyFile(photo.FilePath)
             });
         }
-        catch (Exception)
+        catch
         {
             await Shell.Current.DisplayAlert("提示", "无法打开照片", "知道了");
         }
