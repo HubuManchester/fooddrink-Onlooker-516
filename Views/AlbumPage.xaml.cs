@@ -12,6 +12,10 @@ public partial class AlbumPage : ContentPage
         InitializeComponent();
         _viewModel = new AlbumViewModel();
         BindingContext = _viewModel;
-        NavigationHelper.EnableTabSwipe(this);
     }
+
+    private void OnSwipedLeft(object? sender, SwipedEventArgs e)
+        => NavigationHelper.SwitchToTab(this, +1);
+    private void OnSwipedRight(object? sender, SwipedEventArgs e)
+        => NavigationHelper.SwitchToTab(this, -1);
 }

@@ -6,6 +6,10 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="*,Auto" Padding="16" MaximumWidthRequest="450">
+        <Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft" />
+            <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight" />
+        </Grid.GestureRecognizers>
 
         <!-- 空状态提示 -->
         <VerticalStackLayout Grid.Row="0"

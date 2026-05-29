@@ -12,10 +12,13 @@ public partial class CompassPage : ContentPage
         InitializeComponent();
         _viewModel = new CompassViewModel();
         BindingContext = _viewModel;
-        NavigationHelper.EnableTabSwipe(this);
-
         _viewModel.HeadingChanged += OnHeadingChanged;
     }
+
+    private void OnSwipedLeft(object? sender, SwipedEventArgs e)
+        => NavigationHelper.SwitchToTab(this, +1);
+    private void OnSwipedRight(object? sender, SwipedEventArgs e)
+        => NavigationHelper.SwitchToTab(this, -1);
 
     protected override void OnAppearing()
     {
