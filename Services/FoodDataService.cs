@@ -2,6 +2,7 @@ using FoodPicker.Models;
 
 namespace FoodPicker.Services;
 
+/// 提供美食数据，包括随机抽取逻辑
 public class FoodDataService
 {
     private readonly List<FoodItem> _foods;
