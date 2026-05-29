@@ -15,15 +15,11 @@ public partial class CompassPage : ContentPage
         _viewModel.HeadingChanged += OnHeadingChanged;
     }
 
-    private void OnSwipedLeft(object? sender, SwipedEventArgs e)
-        => NavigationHelper.SwitchToTab(this, +1);
-    private void OnSwipedRight(object? sender, SwipedEventArgs e)
-        => NavigationHelper.SwitchToTab(this, -1);
-
     protected override void OnAppearing()
     {
         base.OnAppearing();
         _viewModel.Start();
+        NavigationHelper.EnableSwipe(this);
     }
 
     protected override void OnDisappearing()

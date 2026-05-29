@@ -8,10 +8,6 @@
     <Grid RowDefinitions="Auto,Auto,Auto,*"
           Padding="24"
           MaximumWidthRequest="400">
-        <Grid.GestureRecognizers>
-            <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft" />
-            <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight" />
-        </Grid.GestureRecognizers>
 
         <!-- 顶部标题 -->
         <VerticalStackLayout Grid.Row="0" Spacing="4" Padding="0,20,0,0">

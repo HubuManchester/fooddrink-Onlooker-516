@@ -6,10 +6,6 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="*,Auto" Padding="20" MaximumWidthRequest="420">
-        <Grid.GestureRecognizers>
-            <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft" />
-            <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight" />
-        </Grid.GestureRecognizers>
 
         <Grid Grid.Row="0"
               HorizontalOptions="Center"

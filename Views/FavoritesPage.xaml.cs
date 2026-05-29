@@ -14,15 +14,10 @@ public partial class FavoritesPage : ContentPage
         BindingContext = _viewModel;
     }
 
-    private void OnSwipedLeft(object? sender, SwipedEventArgs e)
-        => NavigationHelper.SwitchToTab(this, +1);
-    private void OnSwipedRight(object? sender, SwipedEventArgs e)
-        => NavigationHelper.SwitchToTab(this, -1);
-
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        // 每次切换到本页时刷新列表（处理Tab懒加载导致的首次不同步）
         _viewModel.LoadFromService();
+        NavigationHelper.EnableSwipe(this);
     }
 }
