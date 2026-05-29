@@ -82,6 +82,13 @@ public class RandomViewModel : INotifyPropertyChanged
     private void DoRandomPick()
     {
         CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
+
+        // 语音播报当前推荐
+        try
+        {
+            TextToSpeech.Default.SpeakAsync($"今天吃——{CurrentFood.Name}");
+        }
+        catch { /* TTS 失败不影响功能 */ }
     }
 
     private async void OnAddFavorite()
