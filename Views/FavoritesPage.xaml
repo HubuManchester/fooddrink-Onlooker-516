@@ -5,18 +5,98 @@
              Title="我的收藏"
              BackgroundColor="#FFF8F0">
 
-    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="16">
-        <Label Text="⭐"
-               FontSize="60"
-               HorizontalTextAlignment="Center" />
-        <Label Text="我的收藏"
-               FontSize="24"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Center"
-               TextColor="#E85D04" />
-        <Label Text="即将加入收藏功能..."
-               FontSize="14"
-               HorizontalTextAlignment="Center"
-               TextColor="#999999" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="*,Auto" Padding="16" MaximumWidthRequest="450">
+
+        <!-- 空状态提示 -->
+        <VerticalStackLayout Grid.Row="0"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Spacing="12"
+                             IsVisible="{Binding IsEmpty}">
+            <Label Text="📭"
+                   FontSize="64"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="还没有收藏任何美食"
+                   FontSize="18"
+                   TextColor="#999999"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="去「随机推荐」页找找灵感吧~"
+                   FontSize="14"
+                   TextColor="#BBBBBB"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <!-- 收藏列表 -->
+        <CollectionView Grid.Row="0"
+                         ItemsSource="{Binding FavoriteFoods}"
+                         IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <!-- 左滑删除 -->
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="删除"
+                                           BackgroundColor="#FF4444"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <!-- 卡片内容 -->
+                        <Frame Margin="0,0,0,10"
+                               Padding="16"
+                               CornerRadius="14"
+                               BackgroundColor="White"
+                               BorderColor="Transparent"
+                               HasShadow="True">
+
+                            <Grid ColumnDefinitions="60,*" MinimumHeightRequest="70">
+                                <!-- Emoji -->
+                                <Label Grid.Column="0"
+                                       Text="{Binding Emoji}"
+                                       FontSize="36"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center" />
+
+                                <!-- 信息 -->
+                                <VerticalStackLayout Grid.Column="1"
+                                                      Padding="8,0,0,0"
+                                                      Spacing="4"
+                                                      VerticalOptions="Center">
+                                    <Label Text="{Binding Name}"
+                                           FontSize="17"
+                                           FontAttributes="Bold"
+                                           TextColor="#333333" />
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{Binding Category}"
+                                               FontSize="13"
+                                               TextColor="#E85D04" />
+                                    </HorizontalStackLayout>
+                                    <Label Text="{Binding Description}"
+                                           FontSize="12"
+                                           TextColor="#999999"
+                                           LineBreakMode="TailTruncation"
+                                           MaxLines="2" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- 底部清空按钮 -->
+        <Button Grid.Row="1"
+                Text="🗑  清空所有收藏"
+                Command="{Binding ClearAllCommand}"
+                BackgroundColor="#FF6B6B"
+                TextColor="White"
+                FontSize="14"
+                HeightRequest="44"
+                CornerRadius="22"
+                Margin="0,8,0,16"
+                IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}" />
+    </Grid>
 </ContentPage>

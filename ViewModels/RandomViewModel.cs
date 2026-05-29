@@ -96,7 +96,17 @@ public class RandomViewModel : INotifyPropertyChanged
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
         catch { /* 模拟器可能不支持，忽略 */ }
 
-        await Shell.Current.DisplayAlert("已收藏", $"「{CurrentFood.Name}」已加入收藏夹！", "好的");
+        var favService = FavoritesService.Instance;
+
+        if (favService.IsFavorite(CurrentFood))
+        {
+            await Shell.Current.DisplayAlert("提示", $"「{CurrentFood.Name}」已经在收藏夹里了~", "知道了");
+        }
+        else
+        {
+            favService.Add(CurrentFood);
+            await Shell.Current.DisplayAlert("已收藏", $"「{CurrentFood.Name}」已加入收藏夹！", "好的");
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
