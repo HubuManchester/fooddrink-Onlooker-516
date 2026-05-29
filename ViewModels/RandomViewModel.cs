@@ -99,33 +99,30 @@ public class RandomViewModel : INotifyPropertyChanged
         await SpeakTextAsync($"今天吃——{CurrentFood.Name}");
     }
 
-    /// 带语言检测的 TTS，优先中文，失败则用默认语言
+    /// TTS 语音播报，依次尝试中文→默认引擎
     private static async Task SpeakTextAsync(string text)
     {
         try
         {
-            var locales = await TextToSpeech.Default.GetLocalesAsync();
-            // 找中文语音：zh-CN > zh-* > 默认第一个
-            var bestLocale = locales.FirstOrDefault(l =>
-                l.Language.Equals("zh", StringComparison.OrdinalIgnoreCase) &&
-                (l.Country?.Equals("CN", StringComparison.OrdinalIgnoreCase) ?? false))
-                ?? locales.FirstOrDefault(l =>
-                    l.Language.Equals("zh", StringComparison.OrdinalIgnoreCase))
-                ?? locales.FirstOrDefault();
-
-            if (bestLocale != null)
-            {
-                await TextToSpeech.Default.SpeakAsync(text,
-                    new SpeechOptions { Locale = bestLocale });
-            }
-            else
-            {
-                await TextToSpeech.Default.SpeakAsync(text);
-            }
+            // 方案1：直接用默认引擎播（大部分国产手机默认就有中文）
+            await TextToSpeech.Default.SpeakAsync(text);
         }
         catch
         {
-            // TTS 失败，静默处理
+            try
+            {
+                // 方案2：获取可用语言选中文
+                var locales = await TextToSpeech.Default.GetLocalesAsync();
+                var zh = locales.FirstOrDefault(l =>
+                    l.Language.Contains("zh", StringComparison.OrdinalIgnoreCase));
+                if (zh != null)
+                    await TextToSpeech.Default.SpeakAsync(text,
+                        new SpeechOptions { Locale = zh });
+            }
+            catch
+            {
+                // 方案1和2都失败，手机没有TTS引擎，静默
+            }
         }
     }
 
