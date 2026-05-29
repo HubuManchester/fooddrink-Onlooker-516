@@ -1,4 +1,3 @@
-using FoodPicker.Helpers;
 using FoodPicker.ViewModels;
 
 namespace FoodPicker.Views;
@@ -19,7 +18,6 @@ public partial class CompassPage : ContentPage
     {
         base.OnAppearing();
         _viewModel.Start();
-        NavigationHelper.EnableSwipe(this);
     }
 
     protected override void OnDisappearing()

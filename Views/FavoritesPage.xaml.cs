@@ -1,4 +1,3 @@
-using FoodPicker.Helpers;
 using FoodPicker.ViewModels;
 
 namespace FoodPicker.Views;
@@ -18,6 +17,5 @@ public partial class FavoritesPage : ContentPage
     {
         base.OnAppearing();
         _viewModel.LoadFromService();
-        NavigationHelper.EnableSwipe(this);
     }
 }

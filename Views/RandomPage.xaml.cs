@@ -1,4 +1,3 @@
-using FoodPicker.Helpers;
 using FoodPicker.ViewModels;
 
 namespace FoodPicker.Views;
@@ -20,7 +19,6 @@ public partial class RandomPage : ContentPage
     {
         base.OnAppearing();
         _viewModel.StartShakeDetection();
-        NavigationHelper.EnableSwipe(this);
     }
 
     protected override void OnDisappearing()
