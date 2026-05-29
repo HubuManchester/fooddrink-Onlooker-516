@@ -93,23 +93,36 @@ public class FoodDataService
         return _foods[index];
     }
 
-    /// 根据关键词搜索食物，匹配名称或分类
+    /// 根据关键词搜索食物，多层匹配策略
     public FoodItem? SearchFood(string keyword)
     {
         if (string.IsNullOrWhiteSpace(keyword)) return null;
 
         keyword = keyword.Trim();
-        // 精确匹配名称
-        var exact = _foods.FirstOrDefault(f =>
-            f.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase));
-        if (exact != null) return exact;
 
-        // 模糊匹配分类
-        var byCategory = _foods.FirstOrDefault(f =>
-            f.Category.Contains(keyword, StringComparison.OrdinalIgnoreCase));
-        if (byCategory != null) return byCategory;
+        // 第1层：名称精确包含关键词（如搜"火锅"命中"火锅"）
+        var match = _foods.FirstOrDefault(f => f.Name.Contains(keyword));
+        if (match != null) return match;
 
-        return null;
+        // 第2层：描述中包含关键词（如搜"麻辣"命中麻辣烫的描述）
+        match = _foods.FirstOrDefault(f => f.Description.Contains(keyword));
+        if (match != null) return match;
+
+        // 第3层：分类包含关键词（如搜"川渝"命中川渝美食类）
+        match = _foods.FirstOrDefault(f => f.Category.Contains(keyword));
+        if (match != null) return match;
+
+        // 第4层：逐字匹配 —— 关键词的每个字都在名称中出现
+        // 如搜"面条" → "兰州拉面"不含"条"，但"炸酱面"也不含"条"
+        // 降级为：名称至少包含关键词的任意一个字
+        match = _foods.FirstOrDefault(f =>
+            keyword.Any(ch => f.Name.Contains(ch)));
+        if (match != null) return match;
+
+        // 第5层：描述中包含关键词的任意一个字
+        match = _foods.FirstOrDefault(f =>
+            keyword.Any(ch => f.Description.Contains(ch)));
+        return match;
     }
 
     public FoodItem GetRandomFoodExcluding(FoodItem? exclude)
