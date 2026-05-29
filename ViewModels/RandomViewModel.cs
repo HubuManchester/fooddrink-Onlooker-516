@@ -13,6 +13,8 @@ public class RandomViewModel : INotifyPropertyChanged
     private FoodItem _currentFood;
     private DateTime _lastShakeTime = DateTime.MinValue;
 
+    private string _cravingText = "";
+
     public RandomViewModel()
     {
         _foodService = new FoodDataService();
@@ -20,7 +22,17 @@ public class RandomViewModel : INotifyPropertyChanged
 
         RandomPickCommand = new Command(OnRandomPick);
         AddFavoriteCommand = new Command(OnAddFavorite);
+        SpeakCravingCommand = new Command(async () => await OnSpeakCraving());
     }
+
+    // 用户输入的美食名称
+    public string CravingText
+    {
+        get => _cravingText;
+        set { _cravingText = value; OnPropertyChanged(); }
+    }
+
+    public ICommand SpeakCravingCommand { get; }
 
     public FoodItem CurrentFood
     {
@@ -107,6 +119,42 @@ public class RandomViewModel : INotifyPropertyChanged
             favService.Add(CurrentFood);
             await Shell.Current.DisplayAlert("已收藏", $"「{CurrentFood.Name}」已加入收藏夹！", "好的");
         }
+    }
+
+    private async Task OnSpeakCraving()
+    {
+        try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
+        catch { /* 忽略 */ }
+
+        // 输入验证
+        var (isValid, errorMsg) = ValidateCraving();
+        if (!isValid)
+        {
+            await Shell.Current.DisplayAlert("提示", errorMsg, "知道了");
+            return;
+        }
+
+        // 验证通过 → TTS 朗读
+        try
+        {
+            await TextToSpeech.Default.SpeakAsync($"你想吃——{CravingText.Trim()}");
+        }
+        catch (Exception)
+        {
+            await Shell.Current.DisplayAlert("出错了", "语音播报失败，请检查设备音量设置", "好的");
+        }
+    }
+
+    /// 输入验证：不为空、长度检查
+    private (bool isValid, string message) ValidateCraving()
+    {
+        if (string.IsNullOrWhiteSpace(CravingText))
+            return (false, "请输入你想吃的美食名称~");
+
+        if (CravingText.Trim().Length < 2)
+            return (false, "名称太短了，至少输入 2 个字哦");
+
+        return (true, "");
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

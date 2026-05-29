@@ -5,7 +5,7 @@
              Title="随机推荐"
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
-    <Grid RowDefinitions="Auto,Auto,*"
+    <Grid RowDefinitions="Auto,Auto,Auto,*"
           Padding="24"
           MaximumWidthRequest="400">
 
@@ -25,9 +25,44 @@
                    AutomationProperties.IsInAccessibleTree="True" />
         </VerticalStackLayout>
 
+        <!-- 输入栏：我想吃... -->
+        <Frame Grid.Row="1"
+               Padding="4"
+               CornerRadius="24"
+               BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
+               BorderColor="{AppThemeBinding Light={StaticResource FoodDividerLight}, Dark={StaticResource FoodDividerDark}}"
+               HasShadow="False"
+               Margin="0,10,0,0">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry Grid.Column="0"
+                       Text="{Binding CravingText}"
+                       Placeholder="💡 输入你想吃的美食..."
+                       PlaceholderColor="{AppThemeBinding Light=#BBBBBB, Dark=#5A4A3A}"
+                       TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
+                       BackgroundColor="Transparent"
+                       FontSize="15"
+                       ClearButtonVisibility="WhileEditing"
+                       ReturnType="Done"
+                       AutomationProperties.IsInAccessibleTree="True" />
+
+                <Button Grid.Column="1"
+                        Text="🔊 说"
+                        Command="{Binding SpeakCravingCommand}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
+                        TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
+                        FontSize="14"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Padding="16,0"
+                        VerticalOptions="Center"
+                        SemanticProperties.Description="朗读输入的美食名称" />
+            </Grid>
+        </Frame>
+
         <!-- 食物展示卡片 -->
         <Frame x:Name="FoodCard"
-               Grid.Row="1"
+               Grid.Row="2"
                VerticalOptions="Center"
                Padding="24"
                CornerRadius="16"
@@ -89,7 +124,7 @@
         </Frame>
 
         <!-- 底部按钮区 -->
-        <HorizontalStackLayout Grid.Row="2"
+        <HorizontalStackLayout Grid.Row="3"
                                 Spacing="16"
                                 HorizontalOptions="Center"
                                 VerticalOptions="End"
@@ -103,8 +138,8 @@
                     HeightRequest="50"
                     CornerRadius="25"
                     Padding="24,0"
-                    AutomationProperties.Name="再换一个推荐"
-                    AutomationProperties.Hint="点击随机换一道菜" />
+                    SemanticProperties.Description="再换一个推荐"
+                    SemanticProperties.Hint="点击随机换一道菜" />
 
             <Button Text="♡ 收藏"
                     Command="{Binding AddFavoriteCommand}"
@@ -114,8 +149,8 @@
                     HeightRequest="50"
                     CornerRadius="25"
                     Padding="24,0"
-                    AutomationProperties.Name="收藏这道菜"
-                    AutomationProperties.Hint="把这道菜加入收藏夹" />
+                    SemanticProperties.Description="收藏这道菜"
+                    SemanticProperties.Hint="把这道菜加入收藏夹" />
 
         </HorizontalStackLayout>
     </Grid>

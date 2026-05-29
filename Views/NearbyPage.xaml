@@ -37,7 +37,7 @@
                         CornerRadius="22"
                         Padding="0"
                         VerticalOptions="Center"
-                        AutomationProperties.Name="刷新定位" />
+                        SemanticProperties.Description="刷新定位" />
 
                 <!-- Loading -->
                 <ActivityIndicator Grid.Row="1" Grid.Column="0"

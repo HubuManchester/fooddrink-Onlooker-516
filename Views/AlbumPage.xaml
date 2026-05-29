@@ -38,7 +38,7 @@
                         CornerRadius="22"
                         Padding="20,0"
                         VerticalOptions="Center"
-                        AutomationProperties.Name="拍照按钮" />
+                        SemanticProperties.Description="拍照按钮" />
             </Grid>
         </Frame>
 
