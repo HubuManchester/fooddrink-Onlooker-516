@@ -99,29 +99,41 @@ public class RandomViewModel : INotifyPropertyChanged
         await SpeakTextAsync($"今天吃——{CurrentFood.Name}");
     }
 
-    /// TTS 语音播报，依次尝试中文→默认引擎
+    /// TTS 语音播报，多次尝试以确保兼容各种手机
     private static async Task SpeakTextAsync(string text)
     {
         try
         {
-            // 方案1：直接用默认引擎播（大部分国产手机默认就有中文）
-            await TextToSpeech.Default.SpeakAsync(text);
+            // 预热TTS引擎：先获取语言列表触发初始化
+            var locales = await TextToSpeech.Default.GetLocalsAsync();
+
+            var options = new SpeechOptions
+            {
+                Volume = 1.0f,   // 最大音量
+                Pitch = 1.0f     // 正常音调
+            };
+
+            // 优先找中文语音包
+            var zh = locales.FirstOrDefault(l =>
+                l.Language.Contains("zh", StringComparison.OrdinalIgnoreCase));
+            if (zh != null)
+                options.Locale = zh;
+
+            // 短暂延迟让引擎就绪
+            await Task.Delay(80);
+
+            await TextToSpeech.Default.SpeakAsync(text, options);
         }
         catch
         {
             try
             {
-                // 方案2：获取可用语言选中文
-                var locales = await TextToSpeech.Default.GetLocalesAsync();
-                var zh = locales.FirstOrDefault(l =>
-                    l.Language.Contains("zh", StringComparison.OrdinalIgnoreCase));
-                if (zh != null)
-                    await TextToSpeech.Default.SpeakAsync(text,
-                        new SpeechOptions { Locale = zh });
+                // 终极兜底：什么参数都不带直接播
+                await TextToSpeech.Default.SpeakAsync(text);
             }
             catch
             {
-                // 方案1和2都失败，手机没有TTS引擎，静默
+                // 确实没有TTS引擎，静默
             }
         }
     }
