@@ -15,6 +15,7 @@
             <helpers:IsNotEmptyConverter x:Key="IsNotEmptyConverter" />
             <helpers:BoolToColorConverter x:Key="BoolToColorConverter" />
             <helpers:BoolToTextColorConverter x:Key="BoolToTextColorConverter" />
+            <helpers:FavBtnColorConverter x:Key="FavBtnColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

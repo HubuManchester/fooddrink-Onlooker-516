@@ -142,10 +142,10 @@
                     SemanticProperties.Description="再换一个推荐"
                     SemanticProperties.Hint="点击随机换一道菜" />
 
-            <Button Text="♥ 收藏"
+            <Button Text="{Binding FavBtnText}"
                     Command="{Binding AddFavoriteCommand}"
-                    BackgroundColor="{AppThemeBinding Light=#FF6B35, Dark=#CC6633}"
-                    TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
+                    BackgroundColor="{Binding IsFavorited, Converter={StaticResource FavBtnColorConverter}}"
+                    TextColor="White"
                     FontSize="15"
                     HeightRequest="50"
                     CornerRadius="25"

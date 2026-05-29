@@ -19,6 +19,7 @@ public class RandomViewModel : INotifyPropertyChanged
     {
         _foodService = new FoodDataService();
         _currentFood = _foodService.GetRandomFood();
+        UpdateFavoriteState();
 
         RandomPickCommand = new Command(OnRandomPick);
         AddFavoriteCommand = new Command(OnAddFavorite);
@@ -43,8 +44,18 @@ public class RandomViewModel : INotifyPropertyChanged
         {
             _currentFood = value;
             OnPropertyChanged();
+            UpdateFavoriteState();
         }
     }
+
+    private bool _isFavorited;
+    public bool IsFavorited
+    {
+        get => _isFavorited;
+        set { _isFavorited = value; OnPropertyChanged(); OnPropertyChanged(nameof(FavBtnText)); }
+    }
+
+    public string FavBtnText => IsFavorited ? "♥ 已收藏" : "♥ 收藏";
 
     public ICommand RandomPickCommand { get; }
     public ICommand AddFavoriteCommand { get; }
@@ -97,6 +108,11 @@ public class RandomViewModel : INotifyPropertyChanged
         CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
     }
 
+    private void UpdateFavoriteState()
+    {
+        IsFavorited = FavoritesService.Instance.IsFavorite(CurrentFood);
+    }
+
     private async Task OnShare()
     {
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
@@ -127,6 +143,7 @@ public class RandomViewModel : INotifyPropertyChanged
         else
         {
             favService.Add(CurrentFood);
+            UpdateFavoriteState();
             await Shell.Current.DisplayAlert("已收藏", $"「{CurrentFood.Name}」已加入收藏夹！", "好的");
         }
     }

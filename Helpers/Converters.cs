@@ -55,6 +55,19 @@ public class BoolToColorConverter : IValueConverter
         => throw new NotImplementedException();
 }
 
+/// 收藏按钮颜色：已收藏灰，未收藏橙
+public class FavBtnColorConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is bool isFav && isFav)
+            return Color.FromArgb("#999999");  // 已收藏灰色
+        return Color.FromArgb("#FF6B35");       // 未收藏橙色
+    }
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
 /// bool → Color，分类标签文字颜色
 public class BoolToTextColorConverter : IValueConverter
 {
