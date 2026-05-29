@@ -83,7 +83,7 @@
                        BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
                     <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
                         <Label Text="💰" FontSize="24" HorizontalTextAlignment="Center" />
-                        <Label Text="Tasty & Cheap" FontSize="11"
+                        <Label Text="Tasty &amp; Cheap" FontSize="11"
                                TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
                 </Frame>
