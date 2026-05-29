@@ -142,16 +142,27 @@
                     SemanticProperties.Description="再换一个推荐"
                     SemanticProperties.Hint="点击随机换一道菜" />
 
-            <Button Text="♡ 收藏"
+            <Button Text="♥ 收藏"
                     Command="{Binding AddFavoriteCommand}"
                     BackgroundColor="{AppThemeBinding Light=#FF6B35, Dark=#CC6633}"
                     TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
-                    FontSize="16"
+                    FontSize="15"
                     HeightRequest="50"
                     CornerRadius="25"
-                    Padding="24,0"
+                    Padding="20,0"
                     SemanticProperties.Description="收藏这道菜"
                     SemanticProperties.Hint="把这道菜加入收藏夹" />
+
+            <Button Text="📤 分享"
+                    Command="{Binding ShareCommand}"
+                    BackgroundColor="{AppThemeBinding Light=#4A90D9, Dark=#336699}"
+                    TextColor="White"
+                    FontSize="15"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Padding="20,0"
+                    SemanticProperties.Description="分享这道菜"
+                    SemanticProperties.Hint="分享美食推荐给朋友" />
 
         </HorizontalStackLayout>
     </Grid>

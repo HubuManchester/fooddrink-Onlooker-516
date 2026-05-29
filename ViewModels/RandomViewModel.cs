@@ -23,6 +23,7 @@ public class RandomViewModel : INotifyPropertyChanged
         RandomPickCommand = new Command(OnRandomPick);
         AddFavoriteCommand = new Command(OnAddFavorite);
         SearchFoodCommand = new Command(async () => await OnSearchFood());
+        ShareCommand = new Command(async () => await OnShare());
     }
 
     // 用户输入的美食名称
@@ -33,6 +34,7 @@ public class RandomViewModel : INotifyPropertyChanged
     }
 
     public ICommand SearchFoodCommand { get; }
+    public ICommand ShareCommand { get; }
 
     public FoodItem CurrentFood
     {
@@ -93,6 +95,22 @@ public class RandomViewModel : INotifyPropertyChanged
     private void DoRandomPick()
     {
         CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
+    }
+
+    private async Task OnShare()
+    {
+        try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
+        catch { }
+
+        var text = $"{CurrentFood.Emoji} 今天吃「{CurrentFood.Name}」吧！\n"
+                 + $"{CurrentFood.Category} · {CurrentFood.Description}\n"
+                 + $"💡 搭配推荐：{CurrentFood.Pairing}";
+
+        await Share.Default.RequestAsync(new ShareTextRequest
+        {
+            Text = text,
+            Title = $"FoodPicker - {CurrentFood.Name}"
+        });
     }
 
     private async void OnAddFavorite()
