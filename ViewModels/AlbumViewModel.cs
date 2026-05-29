@@ -8,16 +8,30 @@ namespace FoodPicker.ViewModels;
 
 public class AlbumViewModel : INotifyPropertyChanged
 {
-    // 照片分类
-    public static readonly string[] Categories =
+    public class CategoryItem : INotifyPropertyChanged
+    {
+        public string Name { get; set; } = "";
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set { _isSelected = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected))); }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private static readonly string[] CategoryNames =
         { "全部", "🍻 朋友聚会", "💰 好吃不贵", "☕ 独自享受", "🌙 深夜放毒", "🎂 特别日子" };
 
+    public ObservableCollection<CategoryItem> FilterCategories { get; } = new();
+
     private readonly List<PhotoItem> _allPhotos = new();
-    private string _selectedCategory = "全部";
 
     public AlbumViewModel()
     {
         FilteredPhotos = new ObservableCollection<PhotoItem>();
+        foreach (var name in CategoryNames)
+            FilterCategories.Add(new CategoryItem { Name = name, IsSelected = name == "全部" });
         TakePhotoCommand = new Command(async () => await CaptureAsync(true));
         PickPhotoCommand = new Command(async () => await CaptureAsync(false));
         DeletePhotoCommand = new Command<PhotoItem>(OnDeletePhoto);
@@ -83,7 +97,7 @@ public class AlbumViewModel : INotifyPropertyChanged
 
             // 让用户选分类
             var category = await Shell.Current.DisplayActionSheet(
-                "选择照片分类", "取消", null, Categories[1..]); // 跳过"全部"
+                "选择照片分类", "取消", null, CategoryNames[1..]); // 跳过"全部"
             if (category == null || category == "取消") category = "💰 好吃不贵";
 
             // 保存文件
@@ -127,17 +141,21 @@ public class AlbumViewModel : INotifyPropertyChanged
 
     private void OnFilter(string category)
     {
-        _selectedCategory = category;
         SelectedFilter = category;
+
+        // 更新高亮状态
+        foreach (var c in FilterCategories)
+            c.IsSelected = c.Name == category;
+
         ApplyFilter();
     }
 
     private void ApplyFilter()
     {
         FilteredPhotos.Clear();
-        var items = _selectedCategory == "全部"
+        var items = SelectedFilter == "全部"
             ? _allPhotos
-            : _allPhotos.Where(p => p.Category == _selectedCategory);
+            : _allPhotos.Where(p => p.Category == SelectedFilter);
 
         foreach (var p in items)
             FilteredPhotos.Add(p);

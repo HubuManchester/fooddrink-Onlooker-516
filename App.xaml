@@ -13,6 +13,8 @@
             <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <helpers:IsEmptyConverter x:Key="IsEmptyConverter" />
             <helpers:IsNotEmptyConverter x:Key="IsNotEmptyConverter" />
+            <helpers:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <helpers:BoolToTextColorConverter x:Key="BoolToTextColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

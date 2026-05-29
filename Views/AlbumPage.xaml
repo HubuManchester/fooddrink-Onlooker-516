@@ -34,69 +34,28 @@
                            HeightRequest="32" VerticalOptions="End" HorizontalOptions="Center"
                            Margin="0,0,0,-18" />
 
-        <!-- ===== 分类筛选 ===== -->
+        <!-- ===== 分类筛选（动态绑定，自动高亮） ===== -->
         <ScrollView Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,8"
                     HorizontalScrollBarVisibility="Never">
-            <HorizontalStackLayout Spacing="8" x:Name="FilterBar">
-                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
-                       BorderColor="Transparent">
-                    <Label Text="全部" FontSize="12" TextColor="White" VerticalTextAlignment="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="全部" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
-                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
-                    <Label Text="🍻 朋友聚会" FontSize="12"
-                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="🍻 朋友聚会" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
-                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
-                    <Label Text="💰 好吃不贵" FontSize="12"
-                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="💰 好吃不贵" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
-                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
-                    <Label Text="☕ 独自享受" FontSize="12"
-                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="☕ 独自享受" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
-                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
-                    <Label Text="🌙 深夜放毒" FontSize="12"
-                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="🌙 深夜放毒" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
-                       BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}"
-                       BorderColor="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}">
-                    <Label Text="🎂 特别日子" FontSize="12"
-                           TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" VerticalTextAlignment="Center">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding FilterCommand}" CommandParameter="🎂 特别日子" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
+            <HorizontalStackLayout Spacing="8"
+                BindableLayout.ItemsSource="{Binding FilterCategories}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12,6" CornerRadius="16" HasShadow="False"
+                               BorderColor="Transparent"
+                               BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}">
+                            <Label Text="{Binding Name}" FontSize="12"
+                                   TextColor="{Binding IsSelected, Converter={StaticResource BoolToTextColorConverter}}"
+                                   VerticalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FilterCommand}"
+                                        CommandParameter="{Binding Name}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Frame>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
             </HorizontalStackLayout>
         </ScrollView>
 
