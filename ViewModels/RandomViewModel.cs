@@ -141,7 +141,8 @@ public class RandomViewModel : INotifyPropertyChanged
         }
         catch (Exception)
         {
-            await Shell.Current.DisplayAlert("出错了", "语音播报失败，请检查设备音量设置", "好的");
+            await Shell.Current.DisplayAlert("出错了",
+                "语音播报失败。请检查：\n1. 手机是否安装了文字转语音引擎\n2. 系统音量是否已开启\n3. 媒体音量是否静音", "好的");
         }
     }
 

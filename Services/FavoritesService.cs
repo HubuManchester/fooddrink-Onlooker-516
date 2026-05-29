@@ -1,48 +1,66 @@
-using System.Collections.ObjectModel;
 using FoodPicker.Models;
 
 namespace FoodPicker.Services;
 
-/// 收藏夹服务 —— 单例，所有页面共享同一份收藏数据
+/// 收藏夹服务 —— 单例，管理收藏和用户笔记
 public class FavoritesService
 {
     private static FavoritesService? _instance;
     public static FavoritesService Instance => _instance ??= new FavoritesService();
 
-    private readonly List<FoodItem> _favorites = new();
+    private readonly List<FavoriteItem> _favorites = new();
 
-    // 事件：收藏列表变化时通知订阅者（FavoritesViewModel 会监听）
     public event Action? FavoritesChanged;
 
     public bool IsFavorite(FoodItem food)
     {
-        return _favorites.Any(f => f.Name == food.Name);
+        return _favorites.Any(f => f.Food.Name == food.Name);
     }
 
     public bool Add(FoodItem food)
     {
         if (IsFavorite(food))
-            return false;  // 已经收藏过了
+            return false;
 
-        _favorites.Add(food);
+        _favorites.Add(new FavoriteItem { Food = food });
         FavoritesChanged?.Invoke();
         return true;
     }
 
-    public void Remove(FoodItem food)
+    public void Remove(FavoriteItem item)
     {
-        var existing = _favorites.FirstOrDefault(f => f.Name == food.Name);
-        if (existing != null)
+        _favorites.Remove(item);
+        FavoritesChanged?.Invoke();
+    }
+
+    public void RemoveByFoodName(string name)
+    {
+        var item = _favorites.FirstOrDefault(f => f.Food.Name == name);
+        if (item != null)
         {
-            _favorites.Remove(existing);
+            _favorites.Remove(item);
             FavoritesChanged?.Invoke();
         }
     }
 
-    public List<FoodItem> GetAll()
+    public void UpdateNote(string foodName, string note)
     {
-        // 返回副本，防止外部直接修改
-        return new List<FoodItem>(_favorites);
+        var item = _favorites.FirstOrDefault(f => f.Food.Name == foodName);
+        if (item != null)
+        {
+            item.Note = note;
+            FavoritesChanged?.Invoke();
+        }
+    }
+
+    public string GetNote(string foodName)
+    {
+        return _favorites.FirstOrDefault(f => f.Food.Name == foodName)?.Note ?? "";
+    }
+
+    public List<FavoriteItem> GetAll()
+    {
+        return new List<FavoriteItem>(_favorites);
     }
 
     public int Count => _favorites.Count;

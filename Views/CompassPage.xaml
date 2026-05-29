@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FoodPicker.Views.CompassPage"
+             Title="美食指南"
+             BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
+
+    <Grid RowDefinitions="*,Auto" Padding="20" MaximumWidthRequest="420">
+
+        <Grid Grid.Row="0"
+              HorizontalOptions="Center"
+              VerticalOptions="Center"
+              WidthRequest="280" HeightRequest="280">
+
+            <Ellipse WidthRequest="280" HeightRequest="280"
+                     Fill="{AppThemeBinding Light=#FFF0E6, Dark=#2A2018}"
+                     Stroke="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}"
+                     StrokeThickness="3" />
+
+            <Grid x:Name="CompassRose"
+                  WidthRequest="280" HeightRequest="280"
+                  AnchorX="140" AnchorY="140">
+
+                <Label Text="N"
+                       FontSize="22" FontAttributes="Bold"
+                       TextColor="#E85D04"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       Margin="0,12,0,0" />
+
+                <Label Text="S"
+                       FontSize="18" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="End"
+                       Margin="0,0,0,12" />
+
+                <Label Text="E"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"
+                       Margin="0,0,14,0" />
+
+                <Label Text="W"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Margin="14,0,0,0" />
+
+                <Polygon Points="140,30 132,60 148,60"
+                         Fill="#E85D04"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Start" />
+            </Grid>
+
+            <Frame WidthRequest="50" HeightRequest="50"
+                   CornerRadius="25"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#2A2218}"
+                   BorderColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}"
+                   Padding="0"
+                   HorizontalOptions="Center" VerticalOptions="Center"
+                   HasShadow="True">
+                <Label Text="{Binding DirectionEmoji}"
+                       FontSize="20"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Frame>
+
+            <Frame WidthRequest="110" HeightRequest="30"
+                   CornerRadius="15"
+                   BackgroundColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}"
+                   BorderColor="Transparent"
+                   Padding="0"
+                   HorizontalOptions="Center"
+                   VerticalOptions="End"
+                   Margin="0,0,0,-15"
+                   HasShadow="True">
+                <Label HorizontalOptions="Center" VerticalOptions="Center"
+                       FontSize="13" FontAttributes="Bold"
+                       TextColor="White"
+                       Text="{Binding HeadingDegrees}" />
+            </Frame>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="12" Padding="0,0,0,20">
+
+            <Label Text="{Binding DirectionText}"
+                   FontSize="20" FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=#333333, Dark=#E8D5C4}" />
+
+            <Frame Padding="16"
+                   CornerRadius="14"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
+                   BorderColor="Transparent"
+                   HasShadow="True"
+                   IsVisible="{Binding HasReading}">
+
+                <VerticalStackLayout Spacing="8">
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label Text="🍽️" FontSize="16" VerticalTextAlignment="Center" />
+                        <Label Text="推荐美食"
+                               FontSize="15" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
+                               VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="{Binding RecommendedFood.Emoji}"
+                               FontSize="40" VerticalTextAlignment="Center" />
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                            <Label Text="{Binding RecommendedFood.Name}"
+                                   FontSize="22" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#333333, Dark=#E8D5C4}" />
+                            <Label Text="{Binding RecommendedFood.Category}"
+                                   FontSize="13"
+                                   TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding RecommendedFood.Description}"
+                           FontSize="13"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#8A7A6A}"
+                           LineHeight="1.4" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="转动手机，发现不同方位的美食"
+                   FontSize="13"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=#BBBBBB, Dark=#5A4A3A}" />
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

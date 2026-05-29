@@ -13,9 +13,9 @@
             Route="RandomPage" />
 
         <ShellContent
-            Title="附近美食"
-            ContentTemplate="{DataTemplate views:NearbyPage}"
-            Route="NearbyPage" />
+            Title="美食指南"
+            ContentTemplate="{DataTemplate views:CompassPage}"
+            Route="CompassPage" />
 
         <ShellContent
             Title="美食相册"

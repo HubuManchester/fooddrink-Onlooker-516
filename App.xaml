@@ -11,6 +11,8 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <helpers:IsEmptyConverter x:Key="IsEmptyConverter" />
+            <helpers:IsNotEmptyConverter x:Key="IsNotEmptyConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

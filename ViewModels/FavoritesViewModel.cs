@@ -14,16 +14,16 @@ public class FavoritesViewModel : INotifyPropertyChanged
     public FavoritesViewModel()
     {
         _favService = FavoritesService.Instance;
-        FavoriteFoods = new ObservableCollection<FoodItem>(_favService.GetAll());
+        FavoriteItems = new ObservableCollection<FavoriteItem>(_favService.GetAll());
 
-        RemoveCommand = new Command<FoodItem>(OnRemove);
+        RemoveCommand = new Command<FavoriteItem>(OnRemove);
         ClearAllCommand = new Command(OnClearAll);
+        EditNoteCommand = new Command<FavoriteItem>(async (item) => await OnEditNote(item));
 
-        // 监听收藏变化，自动刷新列表
         _favService.FavoritesChanged += OnFavoritesChanged;
     }
 
-    public ObservableCollection<FoodItem> FavoriteFoods { get; }
+    public ObservableCollection<FavoriteItem> FavoriteItems { get; }
 
     private bool _isEmpty = true;
     public bool IsEmpty
@@ -34,13 +34,14 @@ public class FavoritesViewModel : INotifyPropertyChanged
 
     public ICommand RemoveCommand { get; }
     public ICommand ClearAllCommand { get; }
+    public ICommand EditNoteCommand { get; }
 
     private void RefreshList()
     {
-        FavoriteFoods.Clear();
-        foreach (var food in _favService.GetAll())
-            FavoriteFoods.Add(food);
-        IsEmpty = FavoriteFoods.Count == 0;
+        FavoriteItems.Clear();
+        foreach (var item in _favService.GetAll())
+            FavoriteItems.Add(item);
+        IsEmpty = FavoriteItems.Count == 0;
     }
 
     private void OnFavoritesChanged()
@@ -48,23 +49,22 @@ public class FavoritesViewModel : INotifyPropertyChanged
         RefreshList();
     }
 
-    private async void OnRemove(FoodItem food)
+    private async void OnRemove(FavoriteItem item)
     {
         bool confirm = await Shell.Current.DisplayAlert(
             "取消收藏",
-            $"确定要把「{food.Name}」从收藏夹移除吗？",
+            $"确定要把「{item.Food.Name}」从收藏夹移除吗？",
             "移除", "取消");
 
         if (confirm)
         {
-            _favService.Remove(food);
-            // 列表通过 FavoritesChanged 事件自动刷新
+            _favService.Remove(item);
         }
     }
 
     private async void OnClearAll()
     {
-        if (FavoriteFoods.Count == 0) return;
+        if (FavoriteItems.Count == 0) return;
 
         bool confirm = await Shell.Current.DisplayAlert(
             "清空收藏",
@@ -73,11 +73,32 @@ public class FavoritesViewModel : INotifyPropertyChanged
 
         if (confirm)
         {
-            // 拷贝一份再删，避免遍历时修改集合
-            var all = FavoriteFoods.ToList();
+            var all = FavoriteItems.ToList();
             foreach (var f in all)
                 _favService.Remove(f);
         }
+    }
+
+    private async Task OnEditNote(FavoriteItem item)
+    {
+        var currentNote = _favService.GetNote(item.Food.Name);
+
+        // 弹出一个输入框让用户写笔记
+        var newNote = await Shell.Current.DisplayPromptAsync(
+            $"📝 {item.Food.Emoji} {item.Food.Name}",
+            "记录你的美食体验：",
+            "保存",
+            "取消",
+            placeholder: "比如：上次和闺蜜一起吃的，超满足！",
+            initialValue: currentNote,
+            maxLength: 200);
+
+        if (newNote == null) return;  // 用户点了取消
+
+        _favService.UpdateNote(item.Food.Name, newNote);
+
+        try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
+        catch { /* 忽略 */ }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
