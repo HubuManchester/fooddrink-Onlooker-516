@@ -91,16 +91,42 @@ public class RandomViewModel : INotifyPropertyChanged
         catch { /* 模拟器可能不支持，忽略 */ }
     }
 
-    private void DoRandomPick()
+    private async void DoRandomPick()
     {
         CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
 
         // 语音播报当前推荐
+        await SpeakTextAsync($"今天吃——{CurrentFood.Name}");
+    }
+
+    /// 带语言检测的 TTS，优先中文，失败则用默认语言
+    private static async Task SpeakTextAsync(string text)
+    {
         try
         {
-            TextToSpeech.Default.SpeakAsync($"今天吃——{CurrentFood.Name}");
+            var locales = await TextToSpeech.Default.GetLocalesAsync();
+            // 找中文语音：zh-CN > zh-* > 默认第一个
+            var bestLocale = locales.FirstOrDefault(l =>
+                l.Language.Equals("zh", StringComparison.OrdinalIgnoreCase) &&
+                (l.Country?.Equals("CN", StringComparison.OrdinalIgnoreCase) ?? false))
+                ?? locales.FirstOrDefault(l =>
+                    l.Language.Equals("zh", StringComparison.OrdinalIgnoreCase))
+                ?? locales.FirstOrDefault();
+
+            if (bestLocale != null)
+            {
+                await TextToSpeech.Default.SpeakAsync(text,
+                    new SpeechOptions { Locale = bestLocale });
+            }
+            else
+            {
+                await TextToSpeech.Default.SpeakAsync(text);
+            }
         }
-        catch { /* TTS 失败不影响功能 */ }
+        catch
+        {
+            // TTS 失败，静默处理
+        }
     }
 
     private async void OnAddFavorite()
@@ -137,12 +163,12 @@ public class RandomViewModel : INotifyPropertyChanged
         // 验证通过 → TTS 朗读
         try
         {
-            await TextToSpeech.Default.SpeakAsync($"你想吃——{CravingText.Trim()}");
+            await SpeakTextAsync($"你想吃——{CravingText.Trim()}");
         }
         catch (Exception)
         {
             await Shell.Current.DisplayAlert("出错了",
-                "语音播报失败。请检查：\n1. 手机是否安装了文字转语音引擎\n2. 系统音量是否已开启\n3. 媒体音量是否静音", "好的");
+                "语音播报失败。请检查：\n1. 手机设置 > 文字转语音 > 安装语音引擎\n2. 下载中文语音包\n3. 音量是否已开启", "好的");
         }
     }
 

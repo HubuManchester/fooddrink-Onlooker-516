@@ -44,6 +44,12 @@ public class FavoritesViewModel : INotifyPropertyChanged
         IsEmpty = FavoriteItems.Count == 0;
     }
 
+    /// 供页面 OnAppearing 调用，解决 Tab 懒加载导致首次未同步的问题
+    public void LoadFromService()
+    {
+        RefreshList();
+    }
+
     private void OnFavoritesChanged()
     {
         RefreshList();

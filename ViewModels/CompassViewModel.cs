@@ -60,6 +60,8 @@ public class CompassViewModel : INotifyPropertyChanged
     // 上次旋转动画完成后的角度，用于增量动画
     private double _lastAnimHeading;
     private bool _firstReading = true;
+    private double _smoothedDisplay;     // 平滑后的显示角度
+    private int _lastDirectionIdx = -1;  // 上次方位，避免重复推荐
 
     // 8方位映射
     private static readonly string[] DirectionNames =
@@ -100,31 +102,42 @@ public class CompassViewModel : INotifyPropertyChanged
 
     private void OnReadingChanged(object? sender, CompassChangedEventArgs e)
     {
-        _heading = e.Reading.HeadingMagneticNorth;
+        var rawHeading = e.Reading.HeadingMagneticNorth;
+
+        // 指数平滑滤波，减少抖动
+        const double smoothing = 0.12;  // 越小越平滑
+        if (_firstReading)
+        {
+            _heading = rawHeading;
+            _firstReading = false;
+        }
+        else
+        {
+            _heading = _heading * (1 - smoothing) + rawHeading * smoothing;
+        }
+
+        // 变动小于 2 度就忽略，减少无意义的刷新
+        if (Math.Abs(_heading - _smoothedDisplay) < 2) return;
+        _smoothedDisplay = _heading;
+
         var idx = GetDirectionIndex(_heading);
 
         DirectionText = $"{DirectionEmojis[idx]}  面朝{DirectionNames[idx]}";
         HeadingDegrees = $"{_heading:F0}°";
         HasReading = true;
 
-        // 推荐该方位的美食
-        var category = DirectionCategories[idx];
-        RecommendByCategory(category);
+        // 方位变了才换推荐
+        if (idx != _lastDirectionIdx)
+        {
+            _lastDirectionIdx = idx;
+            var category = DirectionCategories[idx];
+            RecommendByCategory(category);
+        }
 
         // 通知 View 做旋转动画（增量角度）
-        double delta;
-        if (_firstReading)
-        {
-            delta = _heading;
-            _firstReading = false;
-        }
-        else
-        {
-            // 计算最短旋转路径
-            delta = _heading - _lastAnimHeading;
-            if (delta > 180) delta -= 360;
-            if (delta < -180) delta += 360;
-        }
+        double delta = _heading - _lastAnimHeading;
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
 
         _lastAnimHeading = _heading;
         CompassRotation += delta;
