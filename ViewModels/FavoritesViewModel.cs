@@ -104,7 +104,7 @@ public class FavoritesViewModel : INotifyPropertyChanged
 
         var pick = FavoriteItems[_rng.Next(FavoriteItems.Count)];
         await Shell.Current.DisplayAlert(
-            $"🎲 今天吃「{pick.Food.Name}」吧！",
+            $"🎲 Let's have {pick.Food.Name} today!",
             $"{pick.Food.Emoji}  {pick.Food.Category}\n\n{pick.Food.Description}",
             "OK");
     }

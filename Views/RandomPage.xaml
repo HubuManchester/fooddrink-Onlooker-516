@@ -47,7 +47,7 @@
                        AutomationProperties.IsInAccessibleTree="True" />
 
                 <Button Grid.Column="1"
-                        Text="🔍 找找看"
+                        Text="🔍 Search"
                         Command="{Binding SearchFoodCommand}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                         TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"

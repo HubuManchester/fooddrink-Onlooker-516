@@ -55,7 +55,7 @@ public class AlbumViewModel : INotifyPropertyChanged
         set { _isBusy = value; OnPropertyChanged(); }
     }
 
-    private string _selectedFilter = "全部";
+    private string _selectedFilter = "All";
     public string SelectedFilter
     {
         get => _selectedFilter;
@@ -153,7 +153,7 @@ public class AlbumViewModel : INotifyPropertyChanged
     private void ApplyFilter()
     {
         FilteredPhotos.Clear();
-        var items = SelectedFilter == "全部"
+        var items = SelectedFilter == "All"
             ? _allPhotos
             : _allPhotos.Where(p => p.Category == SelectedFilter);
 
@@ -166,7 +166,7 @@ public class AlbumViewModel : INotifyPropertyChanged
     private async void OnDeletePhoto(PhotoItem photo)
     {
         bool confirm = await Shell.Current.DisplayAlert(
-            "Delete Photo", $"确定要Delete这张「{photo.Category}」的照片吗？", "Delete", "Cancel");
+            "Delete Photo", $"Delete this photo from 「{photo.Category}」?", "Delete", "Cancel");
         if (!confirm) return;
 
         try
@@ -179,7 +179,7 @@ public class AlbumViewModel : INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            await Shell.Current.DisplayAlert("Error", $"Delete失败：{ex.Message}", "OK");
+            await Shell.Current.DisplayAlert("Error", $"Delete failed: {ex.Message}", "OK");
         }
     }
 
