@@ -99,41 +99,27 @@ public class RandomViewModel : INotifyPropertyChanged
         await SpeakTextAsync($"今天吃——{CurrentFood.Name}");
     }
 
-    /// TTS 语音播报，多次尝试以确保兼容各种手机
+    /// TTS 语音播报，带音量和延迟确保引擎就绪
     private static async Task SpeakTextAsync(string text)
     {
         try
         {
-            // 预热TTS引擎：先获取语言列表触发初始化
-            var locales = await TextToSpeech.Default.GetLocalsAsync();
+            // 短暂延迟让TTS引擎初始化
+            await Task.Delay(100);
 
-            var options = new SpeechOptions
-            {
-                Volume = 1.0f,   // 最大音量
-                Pitch = 1.0f     // 正常音调
-            };
-
-            // 优先找中文语音包
-            var zh = locales.FirstOrDefault(l =>
-                l.Language.Contains("zh", StringComparison.OrdinalIgnoreCase));
-            if (zh != null)
-                options.Locale = zh;
-
-            // 短暂延迟让引擎就绪
-            await Task.Delay(80);
-
-            await TextToSpeech.Default.SpeakAsync(text, options);
+            await TextToSpeech.Default.SpeakAsync(text,
+                new SpeechOptions { Volume = 1.0f, Pitch = 1.0f });
         }
         catch
         {
             try
             {
-                // 终极兜底：什么参数都不带直接播
+                // 兜底：不带参数直接播
                 await TextToSpeech.Default.SpeakAsync(text);
             }
             catch
             {
-                // 确实没有TTS引擎，静默
+                // TTS不可用，静默
             }
         }
     }
