@@ -81,7 +81,7 @@ public class FavoritesViewModel : INotifyPropertyChanged
             .OrderByDescending(g => g.Count())
             .First();
 
-        StatsText = $"共收藏 {count} 道美食 · 最爱 {top.Key}";
+        StatsText = $"Saved {count} dishes · Top category: {top.Key}";
         OnPropertyChanged(nameof(StatsText));
     }
 
@@ -106,15 +106,15 @@ public class FavoritesViewModel : INotifyPropertyChanged
         await Shell.Current.DisplayAlert(
             $"🎲 今天吃「{pick.Food.Name}」吧！",
             $"{pick.Food.Emoji}  {pick.Food.Category}\n\n{pick.Food.Description}",
-            "好的");
+            "OK");
     }
 
     private async void OnRemove(FavoriteItem item)
     {
         bool confirm = await Shell.Current.DisplayAlert(
-            "取消收藏",
-            $"确定要把「{item.Food.Name}」从收藏夹移除吗？",
-            "移除", "取消");
+            "Cancel收藏",
+            $"Remove 「{item.Food.Name}」from favourites?",
+            "Remove", "Cancel");
 
         if (confirm) _favService.Remove(item);
     }
@@ -124,9 +124,9 @@ public class FavoritesViewModel : INotifyPropertyChanged
         if (FavoriteItems.Count == 0) return;
 
         bool confirm = await Shell.Current.DisplayAlert(
-            "清空收藏",
-            "确定要清空所有收藏吗？这个操作不能撤销。",
-            "清空", "取消");
+            "Clear All",
+            "Clear all favourites? This cannot be undone.",
+            "Clear", "Cancel");
 
         if (confirm)
         {
@@ -141,9 +141,9 @@ public class FavoritesViewModel : INotifyPropertyChanged
 
         var newNote = await Shell.Current.DisplayPromptAsync(
             $"📝 {item.Food.Emoji} {item.Food.Name}",
-            "记录你的美食体验：",
-            "保存", "取消",
-            placeholder: "比如：上次和闺蜜一起吃的，超满足！",
+            "Write about your experience:",
+            "Save", "Cancel",
+            placeholder: "e.g. Amazing hotpot with friends! So satisfying.",
             initialValue: currentNote,
             maxLength: 200);
 

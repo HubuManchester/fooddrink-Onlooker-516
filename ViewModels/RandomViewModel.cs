@@ -27,7 +27,7 @@ public class RandomViewModel : INotifyPropertyChanged
         ShareCommand = new Command(async () => await OnShare());
     }
 
-    // 用户输入的美食名称
+    // User's food craving input
     public string CravingText
     {
         get => _cravingText;
@@ -55,12 +55,12 @@ public class RandomViewModel : INotifyPropertyChanged
         set { _isFavorited = value; OnPropertyChanged(); OnPropertyChanged(nameof(FavBtnText)); }
     }
 
-    public string FavBtnText => IsFavorited ? "♥ 已收藏" : "♥ 收藏";
+    public string FavBtnText => IsFavorited ? "♥ Saved" : "♥ Save";
 
     public ICommand RandomPickCommand { get; }
     public ICommand AddFavoriteCommand { get; }
 
-    // 当摇晃发生时通知 View 做动画
+    // Notify View to play animation when shake happens
     public event Action? ShakeHappened;
 
     public void StartShakeDetection()
@@ -90,7 +90,7 @@ public class RandomViewModel : INotifyPropertyChanged
         ShakeHappened?.Invoke();
 
         try { HapticFeedback.Default.Perform(HapticFeedbackType.LongPress); }
-        catch { /* 忽略 */ }
+        catch { /* Silently ignore if not supported */ }
     }
 
     private void OnRandomPick()
@@ -100,7 +100,7 @@ public class RandomViewModel : INotifyPropertyChanged
         ShakeHappened?.Invoke();
 
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
-        catch { /* 忽略 */ }
+        catch { /* Silently ignore if not supported */ }
     }
 
     private void DoRandomPick()
@@ -118,9 +118,9 @@ public class RandomViewModel : INotifyPropertyChanged
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
         catch { }
 
-        var text = $"{CurrentFood.Emoji} 今天吃「{CurrentFood.Name}」吧！\n"
-                 + $"{CurrentFood.Category} · {CurrentFood.Description}\n"
-                 + $"💡 搭配推荐：{CurrentFood.Pairing}";
+        var text = $"{CurrentFood.Emoji} How about 「{CurrentFood.Name}」today?\n"
+                 + $"{CurrentFood.Category} - {CurrentFood.Description}\n"
+                 + $"💡 Pairing: {CurrentFood.Pairing}";
 
         await Share.Default.RequestAsync(new ShareTextRequest
         {
@@ -132,36 +132,36 @@ public class RandomViewModel : INotifyPropertyChanged
     private async void OnAddFavorite()
     {
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
-        catch { /* 忽略 */ }
+        catch { /* Silently ignore */ }
 
         var favService = FavoritesService.Instance;
 
         if (favService.IsFavorite(CurrentFood))
         {
-            await Shell.Current.DisplayAlert("提示", $"「{CurrentFood.Name}」已经在收藏夹里了~", "知道了");
+            await Shell.Current.DisplayAlert("Already Saved", $"「{CurrentFood.Name}」is already in your favourites!", "OK");
         }
         else
         {
             favService.Add(CurrentFood);
             UpdateFavoriteState();
-            await Shell.Current.DisplayAlert("已收藏", $"「{CurrentFood.Name}」已加入收藏夹！", "好的");
+            await Shell.Current.DisplayAlert("Saved!", $"「{CurrentFood.Name}」has been added to favourites!", "OK");
         }
     }
 
     private async Task OnSearchFood()
     {
         try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
-        catch { /* 忽略 */ }
+        catch { /* Silently ignore */ }
 
-        // 输入验证
+        // Input validation
         var (isValid, errorMsg) = ValidateCraving();
         if (!isValid)
         {
-            await Shell.Current.DisplayAlert("提示", errorMsg, "知道了");
+            await Shell.Current.DisplayAlert("Oops", errorMsg, "OK");
             return;
         }
 
-        // 在53种食物中搜索
+        // Search across 53 food items
         var keyword = CravingText.Trim();
         var found = _foodService.SearchFood(keyword);
 
@@ -173,26 +173,24 @@ public class RandomViewModel : INotifyPropertyChanged
         }
         else if (found != null)
         {
-            // 搜到的就是当前显示的
-            await Shell.Current.DisplayAlert("找到了！", $"「{found.Name}」已经显示在卡片上了~", "好的");
+            await Shell.Current.DisplayAlert("Found it!", $"「{found.Name}」is already on the card!", "OK");
         }
         else
         {
-            // 没搜到，随机推荐一个当惊喜
             CurrentFood = _foodService.GetRandomFoodExcluding(CurrentFood);
             SoundHelper.PlayShakeSound();
             ShakeHappened?.Invoke();
-            await Shell.Current.DisplayAlert("没找到", $"没有搜到「{keyword}」相关的美食，为你随机推荐了一个~", "好的");
+            await Shell.Current.DisplayAlert("Not Found", $"Nothing matched 「{keyword}」. Here is a random pick instead!", "OK");
         }
     }
 
     private (bool isValid, string message) ValidateCraving()
     {
         if (string.IsNullOrWhiteSpace(CravingText))
-            return (false, "请输入你想吃的美食名称~");
+            return (false, "Please enter a food name to search for!");
 
         if (CravingText.Trim().Length < 2)
-            return (false, "名称太短了，至少输入 2 个字哦");
+            return (false, "Name is too short! Please enter at least 2 characters.");
 
         return (true, "");
     }

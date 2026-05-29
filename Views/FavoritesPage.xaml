@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FoodPicker.Views.FavoritesPage"
-             Title="我的收藏"
+             Title="Favourites"
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" MaximumWidthRequest="450">
@@ -21,7 +21,7 @@
         </Frame>
 
         <!-- ===== 随手选一个 ===== -->
-        <Button Grid.Row="1" Text="🎲  随手选一个"
+        <Button Grid.Row="1" Text="🎲  Pick One for Me"
                 Command="{Binding RandomPickCommand}"
                 BackgroundColor="{AppThemeBinding Light=#FF8C42, Dark=#CC6633}"
                 TextColor="White" FontSize="14"
@@ -34,10 +34,10 @@
                              HorizontalOptions="Center" Spacing="14"
                              IsVisible="{Binding IsEmpty}">
             <Label Text="📭" FontSize="56" HorizontalTextAlignment="Center" />
-            <Label Text="还没有收藏任何美食" FontSize="18"
+            <Label Text="No favourites yet" FontSize="18"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    HorizontalTextAlignment="Center" />
-            <Label Text="去「随机推荐」页找找灵感吧~" FontSize="13"
+            <Label Text="去「Discover」页找找灵感吧~" FontSize="13"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
@@ -50,7 +50,7 @@
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems>
-                                <SwipeItem Text="删除"
+                                <SwipeItem Text="Delete"
                                            BackgroundColor="{AppThemeBinding Light={StaticResource FoodDangerLight}, Dark={StaticResource FoodDangerDark}}"
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveCommand}"
                                            CommandParameter="{Binding .}" />
@@ -96,7 +96,7 @@
                                            TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
                                            LineBreakMode="TailTruncation" MaxLines="1"
                                            IsVisible="{Binding Note, Converter={StaticResource IsNotEmptyConverter}}" />
-                                    <Label Text="💬 点击添加个人评价..." FontSize="12"
+                                    <Label Text="💬 💬 Tap to add a note..." FontSize="12"
                                            TextColor="{AppThemeBinding Light=#BBBBBB, Dark=#5A4A3A}"
                                            IsVisible="{Binding Note, Converter={StaticResource IsEmptyConverter}}" />
                                 </VerticalStackLayout>
@@ -107,8 +107,8 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- ===== 清空按钮 ===== -->
-        <Button Grid.Row="3" Text="🗑  清空所有收藏"
+        <!-- ===== Clear按钮 ===== -->
+        <Button Grid.Row="3" Text="🗑  Clear All"
                 Command="{Binding ClearAllCommand}"
                 BackgroundColor="{AppThemeBinding Light={StaticResource FoodWarnLight}, Dark={StaticResource FoodWarnDark}}"
                 TextColor="White" FontSize="14"

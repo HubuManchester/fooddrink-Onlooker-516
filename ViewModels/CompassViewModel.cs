@@ -22,7 +22,7 @@ public class CompassViewModel : INotifyPropertyChanged
         set { _compassRotation = value; OnPropertyChanged(); }
     }
 
-    private string _directionText = "正在获取方向...";
+    private string _directionText = "Detecting direction...";
     public string DirectionText
     {
         get => _directionText;
@@ -60,29 +60,28 @@ public class CompassViewModel : INotifyPropertyChanged
     // 上次旋转动画完成后的角度，用于增量动画
     private double _lastAnimHeading;
     private bool _firstReading = true;
-    private double _smoothedDisplay;     // 平滑后的显示角度
-    private int _lastDirectionIdx = -1;  // 上次方位，避免重复推荐
+    private double _smoothedDisplay;
+    private int _lastDirectionIdx = -1;
 
-    // 8方位映射
+    // 8-direction names and categories
     private static readonly string[] DirectionNames =
-        { "北", "东北", "东", "东南", "南", "西南", "西", "西北" };
+        { "North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest" };
 
     private static readonly string[] DirectionEmojis =
         { "⬆️", "↗️", "➡️", "↘️", "⬇️", "↙️", "⬅️", "↖️" };
 
-    // 方位对应的美食类别
     private static readonly string[] DirectionCategories =
-        { "北方小吃", "东北菜", "沪式小吃", "粤式美食",
-          "粤式美食", "川渝美食", "西北风味", "西北风味" };
+        { "Northern Snacks", "Northeastern Cuisine", "Shanghai Delicacies", "Cantonese Cuisine",
+          "Cantonese Cuisine", "Sichuan Cuisine", "Northwest Flavors", "Northwest Flavors" };
 
-    // 方位变化通知 View 做动画
+    // Notify View to animate when heading changes
     public event Action<double>? HeadingChanged;
 
     public void Start()
     {
         if (!Compass.Default.IsSupported)
         {
-            DirectionText = "此设备不支持指南针";
+            DirectionText = "Compass not supported on this device";
             return;
         }
 
@@ -122,7 +121,7 @@ public class CompassViewModel : INotifyPropertyChanged
 
         var idx = GetDirectionIndex(_heading);
 
-        DirectionText = $"{DirectionEmojis[idx]}  面朝{DirectionNames[idx]}";
+        DirectionText = $"{DirectionEmojis[idx]}  Facing {DirectionNames[idx]}";
         HeadingDegrees = $"{_heading:F0}°";
         HasReading = true;
 

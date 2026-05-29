@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FoodPicker.Views.RandomPage"
-             Title="随机推荐"
+             Title="Discover"
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="Auto,Auto,Auto,*"
@@ -11,14 +11,14 @@
 
         <!-- 顶部标题 -->
         <VerticalStackLayout Grid.Row="0" Spacing="4" Padding="0,20,0,0">
-            <Label Text="今天吃什么？"
+            <Label Text="What to eat today?"
                    FontSize="28"
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Center"
                    TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                    AutomationProperties.IsInAccessibleTree="True" />
 
-            <Label Text="摇晃手机，或者点击下方按钮"
+            <Label Text="Shake your phone or tap below!"
                    FontSize="14"
                    HorizontalTextAlignment="Center"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
@@ -37,7 +37,7 @@
             <Grid ColumnDefinitions="*,Auto">
                 <Entry Grid.Column="0"
                        Text="{Binding CravingText}"
-                       Placeholder="💡 输入你想吃的美食..."
+                       Placeholder="💡 Search for a dish..."
                        PlaceholderColor="{AppThemeBinding Light=#BBBBBB, Dark=#5A4A3A}"
                        TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
                        BackgroundColor="Transparent"
@@ -131,7 +131,7 @@
                                 VerticalOptions="End"
                                 Padding="0,0,0,20">
 
-            <Button Text="🔄  再换一个"
+            <Button Text="🔄  Pick Another"
                     Command="{Binding RandomPickCommand}"
                     BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                     TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
@@ -153,7 +153,7 @@
                     SemanticProperties.Description="收藏这道菜"
                     SemanticProperties.Hint="把这道菜加入收藏夹" />
 
-            <Button Text="📤 分享"
+            <Button Text="📤  Share"
                     Command="{Binding ShareCommand}"
                     BackgroundColor="{AppThemeBinding Light=#4A90D9, Dark=#336699}"
                     TextColor="White"

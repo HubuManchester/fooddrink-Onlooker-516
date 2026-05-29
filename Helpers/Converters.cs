@@ -21,7 +21,7 @@ public class InvertedBoolConverter : IValueConverter
     }
 }
 
-/// 字符串是否为空 → 用于显示"添加评价"提示
+/// 字符串是否为空 → 用于显示"添加评价"Note
 public class IsEmptyConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

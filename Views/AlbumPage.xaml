@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FoodPicker.Views.AlbumPage"
-             Title="美食相册"
+             Title="Album"
              BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="Auto,Auto,*" Padding="16" MaximumWidthRequest="450">
@@ -12,15 +12,15 @@
                BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
                BorderColor="Transparent">
             <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
-                <Label Grid.Column="0" Text="📸  美食相册" FontSize="16" FontAttributes="Bold"
+                <Label Grid.Column="0" Text="📸  Album" FontSize="16" FontAttributes="Bold"
                        VerticalTextAlignment="Center"
                        TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}" />
-                <Button Grid.Column="1" Text="🖼️ 相册"
+                <Button Grid.Column="1" Text="🖼️ Gallery"
                         Command="{Binding PickPhotoCommand}"
                         BackgroundColor="{AppThemeBinding Light=#FF8C42, Dark=#CC6633}"
                         TextColor="White" FontSize="13" HeightRequest="38"
                         CornerRadius="19" Padding="14,0" VerticalOptions="Center" />
-                <Button Grid.Column="2" Text="📷 拍照"
+                <Button Grid.Column="2" Text="📷 Camera"
                         Command="{Binding TakePhotoCommand}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                         TextColor="White" FontSize="13" HeightRequest="38"
@@ -63,10 +63,10 @@
         <VerticalStackLayout Grid.Row="2" VerticalOptions="Center" HorizontalOptions="Center"
                              Spacing="14" IsVisible="{Binding IsEmpty}">
             <Label Text="🖼️" FontSize="56" HorizontalTextAlignment="Center" />
-            <Label Text="还没有美食照片" FontSize="18"
+            <Label Text="No food photos yet" FontSize="18"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    HorizontalTextAlignment="Center" />
-            <Label Text="拍照或从相册导入你的美食记录" FontSize="13"
+            <Label Text="Take a photo or import from your gallery" FontSize="13"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
             <!-- 分类灵感卡片 -->
@@ -110,7 +110,7 @@
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems>
-                                <SwipeItem Text="删除"
+                                <SwipeItem Text="Delete"
                                            BackgroundColor="{AppThemeBinding Light={StaticResource FoodDangerLight}, Dark={StaticResource FoodDangerDark}}"
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletePhotoCommand}"
                                            CommandParameter="{Binding .}" />
