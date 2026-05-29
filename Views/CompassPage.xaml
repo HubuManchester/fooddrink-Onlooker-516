@@ -62,12 +62,14 @@
                        HorizontalOptions="Start" VerticalOptions="Start"
                        Margin="50,40,0,0" />
 
-                <Polygon Points="160,8 152,38 168,38"
-                         Fill="#E85D04"
-                         HorizontalOptions="Center" VerticalOptions="Start" />
-                <Polygon Points="160,312 152,282 168,282"
-                         Fill="{AppThemeBinding Light=#999999, Dark=#555555}"
-                         HorizontalOptions="Center" VerticalOptions="End" />
+                <Label Text="▲" FontSize="20"
+                       TextColor="#E85D04"
+                       HorizontalOptions="Center" VerticalOptions="Start"
+                       Margin="0,32,0,0" />
+                <Label Text="▼" FontSize="14"
+                       TextColor="{AppThemeBinding Light=#AAAAAA, Dark=#666666}"
+                       HorizontalOptions="Center" VerticalOptions="End"
+                       Margin="0,0,0,32" />
             </Grid>
 
             <Frame WidthRequest="70" HeightRequest="70"
@@ -77,15 +79,17 @@
                    Padding="0"
                    HorizontalOptions="Center" VerticalOptions="Center"
                    HasShadow="True">
-                <Ellipse WidthRequest="58" HeightRequest="58"
-                         Fill="Transparent"
-                         Stroke="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}"
-                         StrokeThickness="1"
-                         HorizontalOptions="Center" VerticalOptions="Center" />
-                <Label Text="{Binding DirectionEmoji}"
-                       FontSize="24"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center" />
+                <Grid>
+                    <Ellipse WidthRequest="58" HeightRequest="58"
+                             Fill="Transparent"
+                             Stroke="{AppThemeBinding Light=#F0D0B0, Dark=#4A3020}"
+                             StrokeThickness="1"
+                             HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Label Text="{Binding DirectionEmoji}"
+                           FontSize="24"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Grid>
             </Frame>
 
             <Frame WidthRequest="100" HeightRequest="34"
