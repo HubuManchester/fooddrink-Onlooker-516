@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FoodPicker.Views.AlbumPage"
              Title="美食相册"
-             BackgroundColor="#FFF8F0">
+             BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="Auto,*" Padding="16" MaximumWidthRequest="450">
 
@@ -11,7 +11,7 @@
         <Frame Grid.Row="0"
                Padding="14"
                CornerRadius="14"
-               BackgroundColor="White"
+               BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
                BorderColor="Transparent"
                HasShadow="True"
                Margin="0,8,0,12">
@@ -21,23 +21,24 @@
                     <Label Text="📸  记录你的美食"
                            FontSize="16"
                            FontAttributes="Bold"
-                           TextColor="#333333" />
+                           TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}" />
                     <Label Text="拍下让人心动的美食瞬间"
                            FontSize="13"
-                           TextColor="#999999" />
+                           TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}" />
                 </VerticalStackLayout>
 
                 <Button Grid.Column="1"
                         Text="📷 拍照"
                         Command="{Binding TakePhotoCommand}"
                         IsEnabled="{Binding IsTakingPhoto, Converter={StaticResource InvertedBoolConverter}}"
-                        BackgroundColor="#E85D04"
-                        TextColor="White"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
+                        TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
                         FontSize="15"
                         HeightRequest="44"
                         CornerRadius="22"
                         Padding="20,0"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center"
+                        AutomationProperties.Name="拍照按钮" />
             </Grid>
         </Frame>
 
@@ -45,7 +46,7 @@
         <ActivityIndicator Grid.Row="0"
                            IsRunning="{Binding IsTakingPhoto}"
                            IsVisible="{Binding IsTakingPhoto}"
-                           Color="#E85D04"
+                           Color="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                            HeightRequest="40"
                            VerticalOptions="End"
                            HorizontalOptions="Center"
@@ -62,11 +63,11 @@
                    HorizontalTextAlignment="Center" />
             <Label Text="还没有美食照片"
                    FontSize="18"
-                   TextColor="#999999"
+                   TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    HorizontalTextAlignment="Center" />
             <Label Text="点击上方按钮拍一张吧~"
                    FontSize="14"
-                   TextColor="#BBBBBB"
+                   TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
 
@@ -88,7 +89,7 @@
                         <SwipeView.RightItems>
                             <SwipeItems>
                                 <SwipeItem Text="删除"
-                                           BackgroundColor="#FF4444"
+                                           BackgroundColor="{AppThemeBinding Light={StaticResource FoodDangerLight}, Dark={StaticResource FoodDangerDark}}"
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletePhotoCommand}"
                                            CommandParameter="{Binding .}" />
                             </SwipeItems>
@@ -96,16 +97,14 @@
 
                         <Frame Padding="0"
                                CornerRadius="12"
-                               BackgroundColor="White"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
                                BorderColor="Transparent"
                                HasShadow="True"
                                HeightRequest="160">
                             <Grid>
-                                <!-- 缩略图 -->
                                 <Image Source="{Binding .}"
                                        Aspect="AspectFill" />
 
-                                <!-- 点击手势查看大图 -->
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewPhotoCommand}"

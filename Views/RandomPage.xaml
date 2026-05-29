@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FoodPicker.Views.RandomPage"
              Title="随机推荐"
-             BackgroundColor="#FFF8F0">
+             BackgroundColor="{AppThemeBinding Light={StaticResource FoodBgLight}, Dark={StaticResource FoodBgDark}}">
 
     <Grid RowDefinitions="Auto,Auto,*"
           Padding="24"
@@ -15,13 +15,13 @@
                    FontSize="28"
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Center"
-                   TextColor="#E85D04"
+                   TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                    AutomationProperties.IsInAccessibleTree="True" />
 
             <Label Text="摇晃手机，或者点击下方按钮"
                    FontSize="14"
                    HorizontalTextAlignment="Center"
-                   TextColor="#999999"
+                   TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    AutomationProperties.IsInAccessibleTree="True" />
         </VerticalStackLayout>
 
@@ -31,7 +31,7 @@
                VerticalOptions="Center"
                Padding="24"
                CornerRadius="16"
-               BackgroundColor="White"
+               BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
                BorderColor="Transparent"
                HasShadow="True"
                AutomationProperties.IsInAccessibleTree="True">
@@ -48,18 +48,18 @@
                        FontSize="26"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center"
-                       TextColor="#333333"
+                       TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
                        AutomationProperties.IsInAccessibleTree="True" />
 
                 <!-- 类别标签 -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
                     <Frame Padding="10,4"
                            CornerRadius="12"
-                           BackgroundColor="#FFF0E6"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentBgLight}, Dark={StaticResource FoodAccentBgDark}}"
                            BorderColor="Transparent">
                         <Label Text="{Binding CurrentFood.Category}"
                                FontSize="13"
-                               TextColor="#E85D04" />
+                               TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}" />
                     </Frame>
                 </HorizontalStackLayout>
 
@@ -67,12 +67,12 @@
                 <Label Text="{Binding CurrentFood.Description}"
                        FontSize="15"
                        HorizontalTextAlignment="Center"
-                       TextColor="#666666"
+                       TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
                        LineHeight="1.5" />
 
                 <!-- 分割线 -->
                 <BoxView HeightRequest="1"
-                         Color="#F0E0D0"
+                         Color="{AppThemeBinding Light={StaticResource FoodDividerLight}, Dark={StaticResource FoodDividerDark}}"
                          Margin="8,4" />
 
                 <!-- 推荐搭配 -->
@@ -82,7 +82,7 @@
                            VerticalTextAlignment="Center" />
                     <Label Text="{Binding CurrentFood.Pairing}"
                            FontSize="13"
-                           TextColor="#C06A2A"
+                           TextColor="{AppThemeBinding Light=#C06A2A, Dark=#D48A4A}"
                            VerticalTextAlignment="Center" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
@@ -97,25 +97,25 @@
 
             <Button Text="🔄  再换一个"
                     Command="{Binding RandomPickCommand}"
-                    BackgroundColor="#E85D04"
-                    TextColor="White"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
+                    TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
                     FontSize="16"
                     HeightRequest="50"
                     CornerRadius="25"
                     Padding="24,0"
-                    SemanticProperties.Description="再换一个推荐"
-                    SemanticProperties.Hint="点击随机换一道菜" />
+                    AutomationProperties.Name="再换一个推荐"
+                    AutomationProperties.Hint="点击随机换一道菜" />
 
             <Button Text="♡ 收藏"
                     Command="{Binding AddFavoriteCommand}"
-                    BackgroundColor="#FF6B35"
-                    TextColor="White"
+                    BackgroundColor="{AppThemeBinding Light=#FF6B35, Dark=#CC6633}"
+                    TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
                     FontSize="16"
                     HeightRequest="50"
                     CornerRadius="25"
                     Padding="24,0"
-                    SemanticProperties.Description="收藏这道菜"
-                    SemanticProperties.Hint="把这道菜加入收藏夹" />
+                    AutomationProperties.Name="收藏这道菜"
+                    AutomationProperties.Hint="把这道菜加入收藏夹" />
 
         </HorizontalStackLayout>
     </Grid>
