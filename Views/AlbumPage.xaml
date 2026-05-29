@@ -75,7 +75,7 @@
                        BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
                     <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
                         <Label Text="🍻" FontSize="24" HorizontalTextAlignment="Center" />
-                        <Label Text="朋友聚会" FontSize="11"
+                        <Label Text="Friends" FontSize="11"
                                TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
                 </Frame>
@@ -83,7 +83,7 @@
                        BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
                     <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
                         <Label Text="💰" FontSize="24" HorizontalTextAlignment="Center" />
-                        <Label Text="好吃不贵" FontSize="11"
+                        <Label Text="Tasty & Cheap" FontSize="11"
                                TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
                 </Frame>
@@ -91,7 +91,7 @@
                        BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
                     <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
                         <Label Text="🌙" FontSize="24" HorizontalTextAlignment="Center" />
-                        <Label Text="深夜放毒" FontSize="11"
+                        <Label Text="Late Night" FontSize="11"
                                TextColor="{AppThemeBinding Light=#E85D04, Dark=#FF8C42}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
                 </Frame>

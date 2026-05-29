@@ -37,7 +37,7 @@
             <Label Text="No favourites yet" FontSize="18"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextSecondaryLight}, Dark={StaticResource FoodTextSecondaryDark}}"
                    HorizontalTextAlignment="Center" />
-            <Label Text="去「Discover」页找找灵感吧~" FontSize="13"
+            <Label Text="Head to Discover for some inspiration!" FontSize="13"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
@@ -96,7 +96,7 @@
                                            TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
                                            LineBreakMode="TailTruncation" MaxLines="1"
                                            IsVisible="{Binding Note, Converter={StaticResource IsNotEmptyConverter}}" />
-                                    <Label Text="💬 💬 Tap to add a note..." FontSize="12"
+                                    <Label Text="💬 Tap to add a note..." FontSize="12"
                                            TextColor="{AppThemeBinding Light=#BBBBBB, Dark=#5A4A3A}"
                                            IsVisible="{Binding Note, Converter={StaticResource IsEmptyConverter}}" />
                                 </VerticalStackLayout>

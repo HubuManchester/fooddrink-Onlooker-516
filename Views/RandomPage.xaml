@@ -126,43 +126,40 @@
 
         <!-- 底部按钮区 -->
         <HorizontalStackLayout Grid.Row="3"
-                                Spacing="16"
+                                Spacing="10"
                                 HorizontalOptions="Center"
                                 VerticalOptions="End"
                                 Padding="0,0,0,20">
 
-            <Button Text="🔄  Pick Another"
+            <Button Text="🔄 Pick"
                     Command="{Binding RandomPickCommand}"
                     BackgroundColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                     TextColor="{AppThemeBinding Light={StaticResource FoodBtnTextLight}, Dark={StaticResource FoodBtnTextDark}}"
-                    FontSize="16"
-                    HeightRequest="50"
-                    CornerRadius="25"
-                    Padding="24,0"
-                    SemanticProperties.Description="再换一个推荐"
-                    SemanticProperties.Hint="点击随机换一道菜" />
+                    FontSize="13"
+                    HeightRequest="42"
+                    CornerRadius="21"
+                    Padding="16,0"
+                    SemanticProperties.Description="Pick another dish" />
 
             <Button Text="{Binding FavBtnText}"
                     Command="{Binding AddFavoriteCommand}"
                     BackgroundColor="{Binding IsFavorited, Converter={StaticResource FavBtnColorConverter}}"
                     TextColor="White"
-                    FontSize="15"
-                    HeightRequest="50"
-                    CornerRadius="25"
-                    Padding="20,0"
-                    SemanticProperties.Description="收藏这道菜"
-                    SemanticProperties.Hint="把这道菜加入收藏夹" />
+                    FontSize="13"
+                    HeightRequest="42"
+                    CornerRadius="21"
+                    Padding="16,0"
+                    SemanticProperties.Description="Save this dish" />
 
-            <Button Text="📤  Share"
+            <Button Text="📤 Share"
                     Command="{Binding ShareCommand}"
                     BackgroundColor="{AppThemeBinding Light=#4A90D9, Dark=#336699}"
                     TextColor="White"
-                    FontSize="15"
-                    HeightRequest="50"
-                    CornerRadius="25"
-                    Padding="20,0"
-                    SemanticProperties.Description="分享这道菜"
-                    SemanticProperties.Hint="分享美食推荐给朋友" />
+                    FontSize="13"
+                    HeightRequest="42"
+                    CornerRadius="21"
+                    Padding="16,0"
+                    SemanticProperties.Description="Share this dish" />
 
         </HorizontalStackLayout>
     </Grid>
