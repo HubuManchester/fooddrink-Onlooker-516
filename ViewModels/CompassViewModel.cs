@@ -143,7 +143,7 @@ public class CompassViewModel : INotifyPropertyChanged
     {
         // 从 FoodDataService 随机挑一个该分类的食物
         FoodItem? pick = null;
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 50; i++)
         {
             var f = _foodService.GetRandomFood();
             if (f.Category == category)
