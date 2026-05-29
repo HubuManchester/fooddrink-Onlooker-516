@@ -27,7 +27,7 @@
 
             <Grid x:Name="CompassRose"
                   WidthRequest="320" HeightRequest="320"
-                  AnchorX="160" AnchorY="160">
+                  AnchorX="0.5" AnchorY="0.5">
 
                 <Label Text="N" FontSize="24" FontAttributes="Bold"
                        TextColor="#E85D04"
