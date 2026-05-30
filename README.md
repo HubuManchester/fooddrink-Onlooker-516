@@ -104,4 +104,4 @@ A 10-15 minute screencast demonstrating all features against the marking criteri
 
 ## Author
 
-Rong Xiao — Mobile Computing Coursework, 2026
+Yang Senyu — Mobile Computing Coursework, 2026
