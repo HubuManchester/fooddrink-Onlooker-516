@@ -2,7 +2,7 @@ using FoodPicker.Models;
 
 namespace FoodPicker.Services;
 
-/// 
+/// Singleton service managing saved favourites and user notes, shared across all pages
 public class FavoritesService
 {
     private static FavoritesService? _instance;

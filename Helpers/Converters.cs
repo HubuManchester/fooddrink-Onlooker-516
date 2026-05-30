@@ -2,8 +2,7 @@ using System.Globalization;
 
 namespace FoodPicker.Helpers;
 
-/// 
-/// e.g. IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}"
+/// Converts true to false and vice versa, used for visibility toggling in XAML
 public class InvertedBoolConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -21,7 +20,7 @@ public class InvertedBoolConverter : IValueConverter
     }
 }
 
-/// 
+/// Returns true when the bound string is null or empty (used for showing placeholder prompts)
 public class IsEmptyConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -31,7 +30,7 @@ public class IsEmptyConverter : IValueConverter
         => throw new NotImplementedException();
 }
 
-/// 
+/// Returns true when the bound string has content (used for showing note text)
 public class IsNotEmptyConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -41,13 +40,13 @@ public class IsNotEmptyConverter : IValueConverter
         => throw new NotImplementedException();
 }
 
-/// 
+/// Converts bool to Color for category filter chip backgrounds (selected vs unselected)
 public class BoolToColorConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isSelected && isSelected)
-            return Color.FromArgb("#E85D04");  // Selected: orange accent
+            return Color.FromArgb("#E85D04");  // Selected: orange
         return Color.FromArgb("#FFF0E6");       // Unselected: light orange
     }
 
@@ -55,7 +54,7 @@ public class BoolToColorConverter : IValueConverter
         => throw new NotImplementedException();
 }
 
-/// 
+/// Changes favourite button colour: grey when saved, orange when not
 public class FavBtnColorConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -68,14 +67,14 @@ public class FavBtnColorConverter : IValueConverter
         => throw new NotImplementedException();
 }
 
-/// 
+/// Converts bool to text Color for category filter chips (white when selected, orange when not)
 public class BoolToTextColorConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is bool isSelected && isSelected)
-            return Colors.White;   // Selected: white text
-        return Color.FromArgb("#E85D04");  // Unselected: orange text
+            return Colors.White;
+        return Color.FromArgb("#E85D04");
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

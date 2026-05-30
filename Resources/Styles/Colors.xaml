@@ -43,52 +43,51 @@
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
 
-    <!-- -->
-    <!-- -->
+    <!-- Page backgrounds -->
     <Color x:Key="FoodBgLight">#FFF8F0</Color>
     <Color x:Key="FoodBgDark">#1A1410</Color>
 
-    <!-- -->
+    <!-- Card backgrounds -->
     <Color x:Key="FoodCardLight">White</Color>
     <Color x:Key="FoodCardDark">#2A2218</Color>
 
-    <!-- -->
+    <!-- Primary text -->
     <Color x:Key="FoodTextPrimaryLight">#333333</Color>
     <Color x:Key="FoodTextPrimaryDark">#E8D5C4</Color>
 
-    <!-- -->
+    <!-- Secondary text -->
     <Color x:Key="FoodTextSecondaryLight">#999999</Color>
     <Color x:Key="FoodTextSecondaryDark">#8A7A6A</Color>
 
-    <!-- -->
+    <!-- Muted / placeholder text -->
     <Color x:Key="FoodTextMutedLight">#BBBBBB</Color>
     <Color x:Key="FoodTextMutedDark">#5A4A3A</Color>
 
-    <!-- -->
+    <!-- Accent orange -->
     <Color x:Key="FoodAccentLight">#E85D04</Color>
     <Color x:Key="FoodAccentDark">#FF8C42</Color>
 
-    <!-- -->
+    <!-- Accent light background -->
     <Color x:Key="FoodAccentBgLight">#FFF0E6</Color>
     <Color x:Key="FoodAccentBgDark">#3A2A18</Color>
 
-    <!-- -->
+    <!-- Dividers -->
     <Color x:Key="FoodDividerLight">#F0E0D0</Color>
     <Color x:Key="FoodDividerDark">#3A3020</Color>
 
-    <!-- -->
+    <!-- Emoji background in cards -->
     <Color x:Key="FoodEmojiBgLight">#FFF2E6</Color>
     <Color x:Key="FoodEmojiBgDark">#2A2018</Color>
 
-    <!-- -->
+    <!-- Button text on coloured backgrounds -->
     <Color x:Key="FoodBtnTextLight">White</Color>
     <Color x:Key="FoodBtnTextDark">#1A1410</Color>
 
-    <!-- -->
+    <!-- Destructive colour (delete) -->
     <Color x:Key="FoodDangerLight">#FF4444</Color>
     <Color x:Key="FoodDangerDark">#CC3333</Color>
 
-    <!-- -->
+    <!-- Warning colour (clear all) -->
     <Color x:Key="FoodWarnLight">#FF6B6B</Color>
     <Color x:Key="FoodWarnDark">#CC4444</Color>
 </ResourceDictionary>

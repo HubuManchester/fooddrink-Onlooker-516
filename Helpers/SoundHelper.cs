@@ -2,7 +2,7 @@ using Plugin.Maui.Audio;
 
 namespace FoodPicker.Helpers;
 
-/// 
+/// Generates a procedural rattle sound effect (simulating bamboo sticks shaking in a tube)
 public static class SoundHelper
 {
     private static bool _isPlaying;
