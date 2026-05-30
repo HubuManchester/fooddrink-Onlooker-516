@@ -12,13 +12,13 @@ public class NearFood
     public string Distance { get; set; } = "";
     public string Category { get; set; } = "";
     public string Rating { get; set; } = "";       // e.g. "4.5"
-    public string Price { get; set; } = "";         // e.g. "¥¥"
+    public string Price { get; set; } = "";         // e.g. "$$"
     public string Description { get; set; } = "";
 }
 
 public class NearbyViewModel : INotifyPropertyChanged
 {
-    private string _locationText = "正在获取位置...";
+    private string _locationText = "Detecting location...";
     private string _statusEmoji = "📍";
     private bool _isLoading;
 
@@ -28,7 +28,7 @@ public class NearbyViewModel : INotifyPropertyChanged
         RefreshCommand = new Command(async () =>
         {
             try { HapticFeedback.Default.Perform(HapticFeedbackType.Click); }
-            catch { /* 模拟器可能不支持，忽略 */ }
+            catch { /* Silently ignore if not supported */ }
             await LoadLocationAsync();
         });
     }
@@ -69,7 +69,7 @@ public class NearbyViewModel : INotifyPropertyChanged
 
             if (status != PermissionStatus.Granted)
             {
-                LocationText = "定位权限未开启，显示默认推荐";
+                LocationText = "Location permission not granted. Showing default results.";
                 StatusEmoji = "⚠️";
                 GenerateNearbyFoods();
             }
@@ -80,7 +80,7 @@ public class NearbyViewModel : INotifyPropertyChanged
 
                 if (location == null)
                 {
-                    LocationText = "📍  探索周边美食";
+                    LocationText = "📍  ";
                     StatusEmoji = "✅";
                     GenerateNearbyFoods();
                 }
@@ -113,19 +113,19 @@ public class NearbyViewModel : INotifyPropertyChanged
         }
         catch (FeatureNotSupportedException)
         {
-            LocationText = "此设备不支持定位，显示默认推荐";
+            LocationText = "Device does not support location. Showing defaults.";
             StatusEmoji = "⚠️";
             GenerateNearbyFoods();
         }
         catch (PermissionException)
         {
-            LocationText = "定位权限被拒绝，显示默认推荐";
+            LocationText = "Location permission denied. Showing defaults.";
             StatusEmoji = "⚠️";
             GenerateNearbyFoods();
         }
         catch (Exception)
         {
-            LocationText = "📍  探索周边美食";
+            LocationText = "📍  ";
             StatusEmoji = "✅";
             GenerateNearbyFoods();
         }
@@ -143,53 +143,53 @@ public class NearbyViewModel : INotifyPropertyChanged
         {
             new()
             {
-                Name = "蜀大侠火锅",
+                Name = "Shu Daxia Hotpot",
                 Emoji = "🍲",
-                Distance = "约 200m",
-                Category = "川渝美食",
+                Distance = "~200m",
+                Category = "Sichuan Cuisine",
                 Rating = "4.8",
-                Price = "¥¥¥",
-                Description = "正宗重庆牛油火锅，毛肚新鲜脆嫩，店内装修古风十足"
+                Price = "$$$",
+                Description = "Authentic Chongqing hotpot with fresh tripe, traditional decor."
             },
             new()
             {
-                Name = "马记拉面",
+                Name = "Ma Ji Noodles",
                 Emoji = "🍝",
-                Distance = "约 350m",
-                Category = "西北风味",
+                Distance = "~350m",
+                Category = "Northwest Flavors",
                 Rating = "4.6",
-                Price = "¥",
-                Description = "手工拉制，汤清味浓，牛肉软烂，一碗管饱"
+                Price = "$",
+                Description = "Hand-pulled noodles in rich clear broth with tender beef."
             },
             new()
             {
-                Name = "螺阿妹螺蛳粉",
+                Name = "Luo Amei Luosifen",
                 Emoji = "🍜",
-                Distance = "约 500m",
-                Category = "广西美食",
+                Distance = "~500m",
+                Category = "Guangxi Cuisine",
                 Rating = "4.5",
-                Price = "¥",
-                Description = "酸笋正宗够味，粉条Q弹，免费加粉吃到撑"
+                Price = "$",
+                Description = "Authentic sour bamboo shoots with chewy rice noodles."
             },
             new()
             {
-                Name = "港记茶餐厅",
+                Name = "Gang Ji Cafe",
                 Emoji = "🍖",
-                Distance = "约 650m",
-                Category = "粤式美食",
+                Distance = "~650m",
+                Category = "Cantonese Cuisine",
                 Rating = "4.7",
-                Price = "¥¥",
-                Description = "招牌叉烧饭和丝袜奶茶，一秒穿越到香港街头"
+                Price = "$$",
+                Description = "Signature char siu rice and milk tea, a taste of Hong Kong."
             },
             new()
             {
-                Name = "老王煎饼",
+                Name = "Lao Wang Jianbing",
                 Emoji = "🫓",
-                Distance = "约 800m",
-                Category = "北方小吃",
+                Distance = "~800m",
+                Category = "Northern Snacks",
                 Rating = "4.4",
-                Price = "¥",
-                Description = "天津老师傅手艺，薄脆自己炸，酱料秘制配方"
+                Price = "$",
+                Description = "Tianjin-style crepe with crispy cracker and secret sauce."
             },
         };
 

@@ -75,7 +75,7 @@ public class AlbumViewModel : INotifyPropertyChanged
 
         try
         {
-            // 权限检查
+            // 
             if (useCamera)
             {
                 var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
@@ -88,19 +88,19 @@ public class AlbumViewModel : INotifyPropertyChanged
                 }
             }
 
-            // 拍照或选图
+            // 
             FileResult? file = useCamera
                 ? await MediaPicker.Default.CapturePhotoAsync()
                 : await MediaPicker.Default.PickPhotoAsync();
 
-            if (file == null) return; // 用户Cancel
+            if (file == null) return; // User cancelled
 
             // Let user pick a category
             var category = await Shell.Current.DisplayActionSheet(
                 "Choose a category", "Cancel", null, CategoryNames[1..]);
             if (category == null || category == "Cancel") category = "💰 Tasty & Cheap";
 
-            // Save文件
+            // 
             var appDir = FileSystem.AppDataDirectory;
             var fileName = $"food_{DateTime.Now:yyyyMMdd_HHmmss}.jpg";
             var filePath = Path.Combine(appDir, fileName);
@@ -143,7 +143,7 @@ public class AlbumViewModel : INotifyPropertyChanged
     {
         SelectedFilter = category;
 
-        // 更新高亮状态
+        // 
         foreach (var c in FilterCategories)
             c.IsSelected = c.Name == category;
 

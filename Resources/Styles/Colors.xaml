@@ -43,52 +43,52 @@
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
 
-    <!-- ===== FoodPicker 自定义主题色 ===== -->
-    <!-- 页面背景 -->
+    <!-- -->
+    <!-- -->
     <Color x:Key="FoodBgLight">#FFF8F0</Color>
     <Color x:Key="FoodBgDark">#1A1410</Color>
 
-    <!-- 卡片背景 -->
+    <!-- -->
     <Color x:Key="FoodCardLight">White</Color>
     <Color x:Key="FoodCardDark">#2A2218</Color>
 
-    <!-- 主文字 -->
+    <!-- -->
     <Color x:Key="FoodTextPrimaryLight">#333333</Color>
     <Color x:Key="FoodTextPrimaryDark">#E8D5C4</Color>
 
-    <!-- 副文字 -->
+    <!-- -->
     <Color x:Key="FoodTextSecondaryLight">#999999</Color>
     <Color x:Key="FoodTextSecondaryDark">#8A7A6A</Color>
 
-    <!-- 淡文字 -->
+    <!-- -->
     <Color x:Key="FoodTextMutedLight">#BBBBBB</Color>
     <Color x:Key="FoodTextMutedDark">#5A4A3A</Color>
 
-    <!-- 强调色（橙） -->
+    <!-- -->
     <Color x:Key="FoodAccentLight">#E85D04</Color>
     <Color x:Key="FoodAccentDark">#FF8C42</Color>
 
-    <!-- 强调色浅底 -->
+    <!-- -->
     <Color x:Key="FoodAccentBgLight">#FFF0E6</Color>
     <Color x:Key="FoodAccentBgDark">#3A2A18</Color>
 
-    <!-- 分割线 -->
+    <!-- -->
     <Color x:Key="FoodDividerLight">#F0E0D0</Color>
     <Color x:Key="FoodDividerDark">#3A3020</Color>
 
-    <!-- 卡片左侧 emoji 背景 -->
+    <!-- -->
     <Color x:Key="FoodEmojiBgLight">#FFF2E6</Color>
     <Color x:Key="FoodEmojiBgDark">#2A2018</Color>
 
-    <!-- 按钮文字（白/暗底） -->
+    <!-- -->
     <Color x:Key="FoodBtnTextLight">White</Color>
     <Color x:Key="FoodBtnTextDark">#1A1410</Color>
 
-    <!-- 删除红色 -->
+    <!-- -->
     <Color x:Key="FoodDangerLight">#FF4444</Color>
     <Color x:Key="FoodDangerDark">#CC3333</Color>
 
-    <!-- 清空按钮色 -->
+    <!-- -->
     <Color x:Key="FoodWarnLight">#FF6B6B</Color>
     <Color x:Key="FoodWarnDark">#CC4444</Color>
 </ResourceDictionary>

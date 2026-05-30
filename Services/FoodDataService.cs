@@ -93,7 +93,7 @@ public class FoodDataService
         return _foods[index];
     }
 
-    /// 根据关键词搜索食物，多层匹配策略
+    /// 
     public FoodItem? SearchFood(string keyword)
     {
         if (string.IsNullOrWhiteSpace(keyword)) return null;

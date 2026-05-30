@@ -2,7 +2,7 @@ using FoodPicker.Models;
 
 namespace FoodPicker.Services;
 
-/// 收藏夹服务 —— 单例，管理收藏和用户笔记
+/// 
 public class FavoritesService
 {
     private static FavoritesService? _instance;

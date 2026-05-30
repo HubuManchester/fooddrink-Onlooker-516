@@ -57,7 +57,7 @@ public class CompassViewModel : INotifyPropertyChanged
         set { _hasReading = value; OnPropertyChanged(); }
     }
 
-    // 上次旋转动画完成后的角度，用于增量动画
+    // 
     private double _lastAnimHeading;
     private bool _firstReading = true;
     private double _smoothedDisplay;
@@ -103,8 +103,8 @@ public class CompassViewModel : INotifyPropertyChanged
     {
         var rawHeading = e.Reading.HeadingMagneticNorth;
 
-        // 指数平滑滤波，减少抖动
-        const double smoothing = 0.12;  // 越小越平滑
+        // 
+        const double smoothing = 0.12;  // Lower = smoother
         if (_firstReading)
         {
             _heading = rawHeading;
@@ -115,7 +115,7 @@ public class CompassViewModel : INotifyPropertyChanged
             _heading = _heading * (1 - smoothing) + rawHeading * smoothing;
         }
 
-        // 变动小于 2 度就忽略，减少无意义的刷新
+        // 
         if (Math.Abs(_heading - _smoothedDisplay) < 2) return;
         _smoothedDisplay = _heading;
 
@@ -125,7 +125,7 @@ public class CompassViewModel : INotifyPropertyChanged
         HeadingDegrees = $"{_heading:F0}°";
         HasReading = true;
 
-        // 方位变了才换推荐
+        // 
         if (idx != _lastDirectionIdx)
         {
             _lastDirectionIdx = idx;
@@ -133,7 +133,7 @@ public class CompassViewModel : INotifyPropertyChanged
             RecommendByCategory(category);
         }
 
-        // 通知 View 做旋转动画（增量角度）
+        // 
         double delta = _heading - _lastAnimHeading;
         if (delta > 180) delta -= 360;
         if (delta < -180) delta += 360;
@@ -145,7 +145,7 @@ public class CompassViewModel : INotifyPropertyChanged
 
     private int GetDirectionIndex(double h)
     {
-        // 8方位：每45度一个区间，北从 -22.5~22.5（即337.5~22.5）
+        // 
         var normalized = (h + 22.5) % 360;
         if (normalized < 0) normalized += 360;
         return (int)(normalized / 45) % 8;
@@ -153,7 +153,7 @@ public class CompassViewModel : INotifyPropertyChanged
 
     private void RecommendByCategory(string category)
     {
-        // 从 FoodDataService 随机挑一个该分类的食物
+        // 
         FoodItem? pick = null;
         for (int i = 0; i < 50; i++)
         {

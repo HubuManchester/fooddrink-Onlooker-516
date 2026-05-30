@@ -30,14 +30,14 @@ public partial class CompassPage : ContentPage
     {
         try
         {
-            // 轻微过冲再回弹，模拟惯性
+            // 
             var target = _viewModel.CompassRotation;
             await CompassRose.RotateTo(target + (delta > 0 ? 3 : -3), 250, Easing.CubicOut);
             await CompassRose.RotateTo(target, 200, Easing.SpringOut);
         }
         catch
         {
-            // 回退到简单动画
+            // 
             try
             {
                 await CompassRose.RotateTo(_viewModel.CompassRotation, 350, Easing.CubicOut);

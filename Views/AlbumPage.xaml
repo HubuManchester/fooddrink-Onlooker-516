@@ -7,7 +7,7 @@
 
     <Grid RowDefinitions="Auto,Auto,*" Padding="16" MaximumWidthRequest="450">
 
-        <!-- ===== 顶部操作栏 ===== -->
+        <!-- -->
         <Frame Grid.Row="0" Padding="12" CornerRadius="14" HasShadow="True" Margin="0,8,0,8"
                BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
                BorderColor="Transparent">
@@ -28,13 +28,13 @@
             </Grid>
         </Frame>
 
-        <!-- 加载指示器 -->
+        <!-- -->
         <ActivityIndicator Grid.Row="0" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
                            Color="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}"
                            HeightRequest="32" VerticalOptions="End" HorizontalOptions="Center"
                            Margin="0,0,0,-18" />
 
-        <!-- ===== 分类筛选（动态绑定，自动高亮） ===== -->
+        <!-- -->
         <ScrollView Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,8"
                     HorizontalScrollBarVisibility="Never">
             <HorizontalStackLayout Spacing="8"
@@ -59,7 +59,7 @@
             </HorizontalStackLayout>
         </ScrollView>
 
-        <!-- ===== 空状态 ===== -->
+        <!-- -->
         <VerticalStackLayout Grid.Row="2" VerticalOptions="Center" HorizontalOptions="Center"
                              Spacing="14" IsVisible="{Binding IsEmpty}">
             <Label Text="🖼️" FontSize="56" HorizontalTextAlignment="Center" />
@@ -69,7 +69,7 @@
             <Label Text="Take a photo or import from your gallery" FontSize="13"
                    TextColor="{AppThemeBinding Light={StaticResource FoodTextMutedLight}, Dark={StaticResource FoodTextMutedDark}}"
                    HorizontalTextAlignment="Center" />
-            <!-- 分类灵感卡片 -->
+            <!-- -->
             <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                 <Frame Padding="14,10" CornerRadius="12" HasShadow="False"
                        BackgroundColor="{AppThemeBinding Light=#FFF0E6, Dark=#3A2A18}" BorderColor="Transparent">
@@ -98,7 +98,7 @@
             </HorizontalStackLayout>
         </VerticalStackLayout>
 
-        <!-- ===== 照片网格 ===== -->
+        <!-- -->
         <CollectionView Grid.Row="2" ItemsSource="{Binding FilteredPhotos}"
                          IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
             <CollectionView.ItemsLayout>
@@ -122,7 +122,7 @@
                                BorderColor="Transparent">
                             <Grid>
                                 <Image Source="{Binding FilePath}" Aspect="AspectFill" />
-                                <!-- 分类角标 -->
+                                <!-- -->
                                 <Frame Padding="8,3" CornerRadius="10" HasShadow="False"
                                        BackgroundColor="#CC000000" BorderColor="Transparent"
                                        HorizontalOptions="End" VerticalOptions="End"

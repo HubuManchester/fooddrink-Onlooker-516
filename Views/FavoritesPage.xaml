@@ -7,7 +7,7 @@
 
     <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="16" MaximumWidthRequest="450">
 
-        <!-- ===== 统计卡片 ===== -->
+        <!-- -->
         <Frame Grid.Row="0" Padding="14" CornerRadius="14" HasShadow="True" Margin="0,4,0,8"
                BackgroundColor="{AppThemeBinding Light={StaticResource FoodCardLight}, Dark={StaticResource FoodCardDark}}"
                BorderColor="Transparent"
@@ -20,7 +20,7 @@
             </HorizontalStackLayout>
         </Frame>
 
-        <!-- ===== 随手选一个 ===== -->
+        <!-- -->
         <Button Grid.Row="1" Text="🎲  Pick One for Me"
                 Command="{Binding RandomPickCommand}"
                 BackgroundColor="{AppThemeBinding Light=#FF8C42, Dark=#CC6633}"
@@ -29,7 +29,7 @@
                 Margin="0,0,0,10"
                 IsVisible="{Binding HasStats}" />
 
-        <!-- ===== 空状态 ===== -->
+        <!-- -->
         <VerticalStackLayout Grid.Row="2" VerticalOptions="Center"
                              HorizontalOptions="Center" Spacing="14"
                              IsVisible="{Binding IsEmpty}">
@@ -42,7 +42,7 @@
                    HorizontalTextAlignment="Center" />
         </VerticalStackLayout>
 
-        <!-- ===== 收藏列表 ===== -->
+        <!-- -->
         <CollectionView Grid.Row="2" ItemsSource="{Binding FavoriteItems}"
                          IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
             <CollectionView.ItemTemplate>
@@ -67,7 +67,7 @@
                             </Frame.GestureRecognizers>
 
                             <Grid ColumnDefinitions="56,*" MinimumHeightRequest="64">
-                                <!-- 大 emoji -->
+                                <!-- -->
                                 <Border Grid.Column="0" StrokeShape="RoundRectangle 28"
                                         Stroke="Transparent" HeightRequest="52" WidthRequest="52"
                                         BackgroundColor="{AppThemeBinding Light=#FFF2E6, Dark=#2A2018}"
@@ -81,7 +81,7 @@
                                     <HorizontalStackLayout Spacing="8">
                                         <Label Text="{Binding Food.Name}" FontSize="17" FontAttributes="Bold"
                                                TextColor="{AppThemeBinding Light=#333333, Dark=#E8D5C4}" />
-                                        <!-- 笔记角标 -->
+                                        <!-- -->
                                         <Frame Padding="6,2" CornerRadius="8" HasShadow="False"
                                                BackgroundColor="#E85D04" BorderColor="Transparent"
                                                IsVisible="{Binding Note, Converter={StaticResource IsNotEmptyConverter}}"
@@ -91,7 +91,7 @@
                                     </HorizontalStackLayout>
                                     <Label Text="{Binding Food.Category}" FontSize="13"
                                            TextColor="{AppThemeBinding Light={StaticResource FoodAccentLight}, Dark={StaticResource FoodAccentDark}}" />
-                                    <!-- 笔记预览 -->
+                                    <!-- -->
                                     <Label Text="{Binding Note}" FontSize="12"
                                            TextColor="{AppThemeBinding Light=#999999, Dark=#6A5A4A}"
                                            LineBreakMode="TailTruncation" MaxLines="1"
@@ -107,7 +107,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- ===== Clear按钮 ===== -->
+        <!-- -->
         <Button Grid.Row="3" Text="🗑  Clear All"
                 Command="{Binding ClearAllCommand}"
                 BackgroundColor="{AppThemeBinding Light={StaticResource FoodWarnLight}, Dark={StaticResource FoodWarnDark}}"

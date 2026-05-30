@@ -31,12 +31,12 @@ public partial class RandomPage : ContentPage
     {
         try
         {
-            // emoji 先弹跳
+            // 
             await EmojiLabel.ScaleTo(1.3, 100, Easing.CubicOut);
             await EmojiLabel.ScaleTo(0.9, 80, Easing.CubicIn);
             await EmojiLabel.ScaleTo(1.0, 100, Easing.CubicOut);
 
-            // 卡片缩小+轻微旋转
+            // 
             await Task.WhenAll(
                 FoodCard.ScaleTo(0.88, 120, Easing.CubicIn),
                 FoodCard.RotateTo(4, 120, Easing.CubicIn)
@@ -44,13 +44,13 @@ public partial class RandomPage : ContentPage
 
             await Task.Delay(40);
 
-            // 弹回原位
+            // 
             await Task.WhenAll(
                 FoodCard.ScaleTo(1.03, 180, Easing.CubicOut),
                 FoodCard.RotateTo(-1.5, 180, Easing.CubicOut)
             );
 
-            // 回弹到正常
+            // 
             await Task.WhenAll(
                 FoodCard.ScaleTo(1.0, 140, Easing.CubicOut),
                 FoodCard.RotateTo(0, 140, Easing.CubicOut)
@@ -58,7 +58,7 @@ public partial class RandomPage : ContentPage
         }
         catch
         {
-            // 动画失败不影响功能
+            // 
         }
     }
 }

@@ -60,7 +60,7 @@ public class FavoritesViewModel : INotifyPropertyChanged
             FavoriteItems.Add(item);
         IsEmpty = FavoriteItems.Count == 0;
 
-        // 更新统计
+        // 
         UpdateStats();
     }
 
@@ -75,7 +75,7 @@ public class FavoritesViewModel : INotifyPropertyChanged
             return;
         }
 
-        // 找收藏最多的分类
+        // 
         var top = FavoriteItems
             .GroupBy(f => f.Food.Category)
             .OrderByDescending(g => g.Count())
