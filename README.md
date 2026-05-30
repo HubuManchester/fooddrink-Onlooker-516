@@ -1,7 +1,7 @@
-# FoodPicker - 今天吃什么 🍲
+# FoodPicker 🍲
 
 A cross-platform mobile app built with **.NET MAUI** that helps users decide what to eat.  
-Theme: **Food and Drink**.
+Theme: **Food and Drink** — 53 dishes across 14 regional Chinese cuisines.
 
 ---
 
@@ -11,30 +11,31 @@ Theme: **Food and Drink**.
 
 | Tab | Description |
 |-----|-------------|
-| 🎲 **随机推荐** | Shake your phone or tap a button to get a random food recommendation |
-| 🧭 **美食指南** | Compass that recommends regional cuisine based on which direction you're facing |
-| 📷 **美食相册** | Take photos of your meals and browse them in a grid |
-| ⭐ **我的收藏** | Save favorite recommendations and add personal notes |
+| 🎲 **Discover** | Shake your phone or tap to get a random food recommendation. Search for dishes, save favourites, share with friends. |
+| 🧭 **Compass** | Real-time magnetic compass that recommends regional cuisine based on the direction you are facing. |
+| 📷 **Album** | Take photos or import from gallery. Organise by category (Friends, Tasty & Cheap, Late Night, etc.) |
+| ⭐ **Favourites** | View saved dishes with stats. Add personal notes. Pick a random favourite when you cannot decide. |
 
-### 🔧 Mobile Hardware Used (7 features)
+### 🔧 Mobile Hardware Used (5 features)
 
 | # | Hardware | Feature |
 |---|----------|---------|
-| 1 | Accelerometer | Shake to get a new food suggestion |
-| 2 | Compass / Magnetometer | Food recommendations based on heading direction |
-| 3 | Geolocation + Geocoding | Get user location and display address |
-| 4 | Camera | Take photos of meals |
-| 5 | Text-to-Speech | Voice announcement of recommended foods |
-| 6 | Audio | Custom "rattle" sound effect (procedurally generated WAV) |
-| 7 | Haptic Feedback | Vibration on button taps and shake events |
+| 1 | Accelerometer (Shake) | Shake phone to get a new food suggestion with animation |
+| 2 | Compass / Magnetometer | Real-time direction-based food recommendations with smoothed rotation |
+| 3 | Geolocation + Geocoding | GPS location with reverse geocoding and permission handling |
+| 4 | Camera | Take food photos and save to local storage |
+| 5 | Haptic Feedback | Tactile vibration on button taps and shake events |
 
-### ✅ Other Features
+### ✅ Other Highlights
 
-- Dark mode support (auto-adapts to system theme)
-- Input validation with user-friendly error messages
-- Accessibility labels for screen readers
-- MVVM architecture
-- Cross-platform: Android & Windows
+- **Dark mode** — auto-adapts to system theme via `AppThemeBinding`
+- **Input validation** — empty check and minimum length with friendly error messages
+- **Accessibility** — `SemanticProperties` on all interactive elements, minimum 44px touch targets
+- **53 dish database** — 14 regional categories with emoji, descriptions, and pairing suggestions
+- **Food search** — 5-layer matching (name, description, category, character-level)
+- **Share integration** — system share sheet for food recommendations
+- **Custom sound effects** — procedurally generated WAV "rattle" sound
+- **MVVM architecture** — clean separation of Views, ViewModels, Models, and Services
 
 ---
 
@@ -77,11 +78,11 @@ dotnet run -f net9.0-windows10.0.19041.0
 
 ```
 FoodPicker/
-├── Models/          # FoodItem, FavoriteItem
-├── ViewModels/      # RandomViewModel, CompassViewModel, etc.
-├── Views/           # XAML pages (RandomPage, CompassPage, ...)
-├── Services/        # FoodDataService, FavoritesService
-├── Helpers/         # SoundHelper, Converters
+├── Models/          # FoodItem, FavoriteItem, PhotoItem
+├── ViewModels/      # RandomViewModel, CompassViewModel, AlbumViewModel, FavoritesViewModel
+├── Views/           # XAML pages (RandomPage, CompassPage, AlbumPage, FavoritesPage)
+├── Services/        # FoodDataService (53 dishes), FavoritesService (singleton)
+├── Helpers/         # SoundHelper (WAV generation), Converters
 ├── Resources/       # Fonts, Images, Styles (Colors.xaml, Styles.xaml)
 └── Platforms/       # Android, iOS, Windows platform-specific code
 ```
@@ -90,7 +91,7 @@ FoodPicker/
 
 ## Screencast
 
-A 10-15 minute screencast demonstrates all features against the marking criteria:
+A 10-15 minute screencast demonstrating all features against the marking criteria:
 - UI/UX Design & Accessibility (30%)
 - Mobile Hardware (20%)
 - Functionality (20%)
