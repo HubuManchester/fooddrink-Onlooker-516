@@ -122,6 +122,7 @@ public class RandomViewModel : INotifyPropertyChanged
                  + $"{CurrentFood.Category} - {CurrentFood.Description}\n"
                  + $"💡 Pairing: {CurrentFood.Pairing}";
 
+
         await Share.Default.RequestAsync(new ShareTextRequest
         {
             Text = text,

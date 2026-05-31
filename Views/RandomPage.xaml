@@ -9,7 +9,6 @@
           Padding="24"
           MaximumWidthRequest="400">
 
-        <!-- -->
         <VerticalStackLayout Grid.Row="0" Spacing="4" Padding="0,20,0,0">
             <Label Text="What to eat today?"
                    FontSize="28"
@@ -25,7 +24,6 @@
                    AutomationProperties.IsInAccessibleTree="True" />
         </VerticalStackLayout>
 
-        <!-- -->
         <Frame Grid.Row="1"
                Padding="4"
                CornerRadius="24"
@@ -60,7 +58,6 @@
             </Grid>
         </Frame>
 
-        <!-- -->
         <Frame x:Name="FoodCard"
                Grid.Row="2"
                VerticalOptions="Center"
@@ -79,7 +76,6 @@
                        HorizontalTextAlignment="Center"
                        AutomationProperties.IsInAccessibleTree="True" />
 
-                <!-- -->
                 <Label Text="{Binding CurrentFood.Name}"
                        FontSize="26"
                        FontAttributes="Bold"
@@ -87,7 +83,6 @@
                        TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
                        AutomationProperties.IsInAccessibleTree="True" />
 
-                <!-- -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
                     <Frame Padding="10,4"
                            CornerRadius="12"
@@ -99,19 +94,16 @@
                     </Frame>
                 </HorizontalStackLayout>
 
-                <!-- -->
                 <Label Text="{Binding CurrentFood.Description}"
                        FontSize="15"
                        HorizontalTextAlignment="Center"
                        TextColor="{AppThemeBinding Light={StaticResource FoodTextPrimaryLight}, Dark={StaticResource FoodTextPrimaryDark}}"
                        LineHeight="1.5" />
 
-                <!-- -->
                 <BoxView HeightRequest="1"
                          Color="{AppThemeBinding Light={StaticResource FoodDividerLight}, Dark={StaticResource FoodDividerDark}}"
                          Margin="8,4" />
 
-                <!-- -->
                 <HorizontalStackLayout Spacing="6" HorizontalOptions="Center">
                     <Label Text="💡"
                            FontSize="14"
@@ -124,7 +116,6 @@
             </VerticalStackLayout>
         </Frame>
 
-        <!-- -->
         <HorizontalStackLayout Grid.Row="3"
                                 Spacing="10"
                                 HorizontalOptions="Center"
